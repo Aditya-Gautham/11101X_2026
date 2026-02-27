@@ -10,14 +10,15 @@
 #include "pros/rtos.hpp"
 
 lemlib::OdomSensors::OdomSensors(TrackingWheel* vertical1, TrackingWheel* vertical2, TrackingWheel* horizontal1,
-                                 TrackingWheel* horizontal2, pros::Imu* imu, pros::Distance* distanceLeftBack, pros::Distance* distanceLeftFront)
+                                 TrackingWheel* horizontal2, pros::Imu* imu, pros::Distance* distanceLeft, pros::Distance* distanceRight, pros::Distance* distanceFront)
     : vertical1(vertical1),
       vertical2(vertical2),
       horizontal1(horizontal1),
       horizontal2(horizontal2),
       imu(imu),
-      distanceLeftBack(distanceLeftBack),
-      distanceLeftFront(distanceLeftFront) {}
+      distanceLeft(distanceLeft),
+      distanceRight(distanceRight),
+      distanceFront(distanceFront) {}
 
 lemlib::Drivetrain::Drivetrain(pros::MotorGroup* leftMotors, pros::MotorGroup* rightMotors, float trackWidth,
                                float wheelDiameter, float rpm, float horizontalDrift)
@@ -197,39 +198,76 @@ void lemlib::Chassis::setBrakeMode(pros::motor_brake_mode_e mode) {
     drivetrain.rightMotors->set_brake_mode_all(mode);
 }
 
-void lemlib::Chassis::resetWithDistance(double wall){
-    float y = this->getPose().y;
-    float theta = this->getPose().theta;
-    lemlib::setPose(lemlib::Pose((wall - getLeftBackDistance()), y, theta));
-}
+// Distance sensor reset logic
+const float field_half_size = 70.25;
 
-double lemlib::Chassis::resetAngleWithSelfCorrectionInches(){
-    lemlib::resetAngleWithSelfCorrectionInches();
-}
-/*
-void lemlib::Chassis::distanceReset(double count) {
-    double sum;
-    double average;
-    for(int i = 0; i < count; i++)
-    {
-        sum += distance1.get_distance();
-        pros::delay(20);
+void lemlib::Chassis::resetPositionWithSensor(pros::Distance* sensor, double sensor_offset, double sensor_angle_offset) {
+    if (sensor == nullptr) return;
+    
+    // 1. SAFE READ FILTERING
+    int rawMm = sensor->get_distance();
+    // Reject error codes (0), out of range (9999), or values over 2000mm
+    if (rawMm <= 20 || rawMm > 2000) return; 
+
+    double sensorReading = rawMm / 25.4;
+    
+    // Reject readings under 1.5 inches (sensor blind spot)
+    if (sensorReading < 1.5) return;
+
+    // 2. Get current pose and normalize heading
+    Pose pose = this->getPose(); 
+    double headingRad = pose.theta * (M_PI / 180.0);
+    double sensorAngleRad = sensor_angle_offset * (M_PI / 180.0);
+    double totalAngleRad = headingRad + sensorAngleRad;
+
+    double normalizedAngle = fmod(totalAngleRad, 2 * M_PI);
+    if (normalizedAngle < 0) normalizedAngle += 2 * M_PI;
+
+    // 3. Determine target wall 
+    bool resettingX = false;
+    double wallCoordinate = 0;
+    double targetWallAngleRad = 0;
+
+    if (normalizedAngle > M_PI_4 && normalizedAngle <= 3 * M_PI_4) {
+        targetWallAngleRad = M_PI_2; // East Wall
+        resettingX = true;
+        wallCoordinate = field_half_size;
+    } else if (normalizedAngle > 3 * M_PI_4 && normalizedAngle <= 5 * M_PI_4) {
+        targetWallAngleRad = M_PI;   // South Wall
+        resettingX = false;
+        wallCoordinate = -field_half_size;
+    } else if (normalizedAngle > 5 * M_PI_4 && normalizedAngle <= 7 * M_PI_4) {
+        targetWallAngleRad = 3 * M_PI_2; // West Wall
+        resettingX = true;
+        wallCoordinate = -field_half_size;
+    } else {
+        targetWallAngleRad = 0;      // North Wall
+        resettingX = false;
+        wallCoordinate = field_half_size;
     }
-    average = sum/count*0.0393701;
-    setPose(average, pose.y, pose.theta);
-}
 
-/*void lemlib::Chassis::odomConfiguration() {
-    //drivetrain.leftMotors->set_brake_mode_all(MOTOR_BRAKE_HOLD);
-    //drivetrain.rightMotors->set_brake_mode_all(MOTOR_BRAKE_HOLD);
-    sensors.imu->reset();
-    while (sensors.imu->getheading() < 360) {
-        drivetrain.leftMotors->move(30);
-        drivetrain.rightMotors->move(-30);
-        pros::delay(10);
+    // 4. THE 5-DEGREE GUARD
+    double angleDiff = fabs(totalAngleRad - targetWallAngleRad);
+    if (angleDiff > M_PI) angleDiff = 2 * M_PI - angleDiff;
+    if (angleDiff > (5.0 * M_PI / 180.0)) return; 
+
+    // 5. COSINE CORRECTION
+    double totalDist = sensorReading + sensor_offset;
+    double correctedDist = totalDist * cos(angleDiff);
+    
+    // 6. AREA VALIDATION (Sanity Check)
+    double calculatedPos = wallCoordinate - (correctedDist * (wallCoordinate > 0 ? 1 : -1));
+    double currentPos = resettingX ? pose.x : pose.y;
+
+    // Reject if the sensor data suggests a jump larger than 12 inches
+    if (fabs(calculatedPos - currentPos) > 12.0) return;
+
+    // 7. Apply to LemLib Pose - AXIS ISOLATED
+    if (resettingX) {
+        // Update X, keep Y exactly as it was
+        this->setPose(calculatedPos, pose.y, pose.theta);
+    } else {
+        // Update Y, keep X exactly as it was
+        this->setPose(pose.x, calculatedPos, pose.theta);
     }
-    drivetrain.leftMotors->move(0);
-    drivetrain.rightMotors->move(0);
-    pros::delay(500);
-
-}*/
+}

@@ -1,16 +1,17 @@
 #include "main.h"
 #include "pros/motors.h"
 
-Intake::Intake(pros::Motor bottomIntakeMotors, pros::Motor topIntakeMotors, pros::Optical colorSensor, pros::adi::DigitalOut intakePneumatic)
-    : bottomIntakeMotors(bottomIntakeMotors),
-      topIntakeMotors(topIntakeMotors),
-      colorSensor(colorSensor),
-      intakePneumatic(intakePneumatic) {}
-      
+Intake::Intake(pros::MotorGroup& bottomMotorGroup, pros::Motor& topMotor, pros::Optical colorSensor_, pros::adi::DigitalOut intakePneumatic_)
+        :   bottomIntakeMotors(bottomMotorGroup),
+            topIntakeMotors(topMotor),
+            colorSensor(colorSensor_),
+            intakePneumatic(intakePneumatic_) {}
+
 void Intake::calibrate(bool red) {
     colorSortActive = true;
     intakePneumaticV(0);
     intakePneumaticActive = true;
+    bottomIntakeMotors.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     topIntakeMotors.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     //if (red) { redColorSort(); }
     //else { blueColorSort(); }
@@ -30,14 +31,13 @@ void Intake::intakePneumaticV(int value) {
 }
 
 void Intake::intakeBlock() {
-    topIntakeMotors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     moveBottomIntake(600);
-    moveTopIntake(0);
+    moveTopIntake(600);
 }
 
 void Intake::outtakeBlock() {
     moveBottomIntake(-600);
-    moveTopIntake(600);
+    moveTopIntake(-600);
 }
 
 void Intake::scoreMiddleGoal() {
@@ -47,7 +47,7 @@ void Intake::scoreMiddleGoal() {
 
 void Intake::scoreHighGoal() {
     moveBottomIntake(600);
-    moveTopIntake(-600);
+    moveTopIntake(600);
 }
 
 void Intake::stopIntake() {
@@ -57,23 +57,26 @@ void Intake::stopIntake() {
 
 void Intake::spitOut() {
     moveBottomIntake(600);
-    moveTopIntake(600);
+    moveTopIntake(-600);
 }
 
 void Intake::scoreMiddleHigh() {
     moveBottomIntake(0);
-    moveTopIntake(-100);
+    moveTopIntake(100);
 }
 
 void Intake::intakeOut() {
     moveBottomIntake(600);
-    moveTopIntake(600);
+    moveTopIntake(-600);
 }
 
 void Intake::intakeOutAuton() {
     moveBottomIntake(600);
-    moveTopIntake(250);
+    //moveTopIntake(250);
     //moveTopIntake(400);
+    //moveTopIntake(300);
+    //just for skills
+    moveTopIntake(500);
 }
 
 void Intake::intakeOutSkills() {

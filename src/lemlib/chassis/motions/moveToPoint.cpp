@@ -23,6 +23,7 @@ void lemlib::Chassis::moveToPoint(float x, float y, int timeout, MoveToPointPara
 
     // create local PIDs and exit conditions
     PID localLateralPID(selectedLateralSettings.kP, selectedLateralSettings.kI, selectedLateralSettings.kD, selectedLateralSettings.windupRange, true);
+    // localHeadingPID uses selectedHeadingSettings
     PID localHeadingPID(selectedHeadingSettings.kP, selectedHeadingSettings.kI, selectedHeadingSettings.kD, selectedHeadingSettings.windupRange, true);
     ExitCondition localLateralLargeExit(selectedLateralSettings.largeError, selectedLateralSettings.largeErrorTimeout);
     ExitCondition localLateralSmallExit(selectedLateralSettings.smallError, selectedLateralSettings.smallErrorTimeout);
@@ -45,6 +46,7 @@ void lemlib::Chassis::moveToPoint(float x, float y, int timeout, MoveToPointPara
 
     // calculate target pose in standard form
     Pose target(x, y);
+    const float pathAngle = lastPose.angle(target);
 
     // main loop
     while (!timer.isDone() && ((!localLateralSmallExit.getExit() && !localLateralLargeExit.getExit()) || !close) &&
@@ -76,9 +78,20 @@ void lemlib::Chassis::moveToPoint(float x, float y, int timeout, MoveToPointPara
 
         // calculate error
         const float adjustedRobotTheta = params.forwards ? pose.theta : pose.theta + M_PI;
-        // recalculate angular error dynamically relative to the point
-        const float headingError = angleError(adjustedRobotTheta, pose.angle(target));
-        float lateralError = pose.distance(target) * cos(angleError(pose.theta, pose.angle(target)));
+        
+        // Decide if we chase the "Carrot" or stay on the "Rail"
+        float targetHeading;
+        float lateralError;
+        if (params.chasePoint) {
+            targetHeading = pose.angle(target); // Carrot (Standard)
+            lateralError = distTarget * cos(angleError(pose.theta, targetHeading));
+        } else {
+            targetHeading = pathAngle; // Rail (Stable Reverse)
+            lateralError = params.forwards ? distTarget : -distTarget;
+        }
+
+        // recalculate angular error dynamically relative to the point or line
+        const float headingError = angleError(adjustedRobotTheta, targetHeading);
 
         // update exit conditions
         localLateralSmallExit.update(lateralError);
@@ -106,7 +119,6 @@ void lemlib::Chassis::moveToPoint(float x, float y, int timeout, MoveToPointPara
 
         // apply restrictions on heading speed
         headingOut = std::clamp(headingOut, -params.maxSpeed, params.maxSpeed);
-        //headingOut = slew(headingOut, prevHeadingOut, selectedHeadingSettings.slew);
 
         // apply restrictions on lateral speed
         lateralOut = std::clamp(lateralOut, -params.maxSpeed, params.maxSpeed);

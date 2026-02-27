@@ -18,6 +18,10 @@ void Matchload::matchloadChange() {
     }
 }
 
+bool Matchload::matchloadValue() {
+    return matchloadOut;
+}
+
 void Matchload::calibrate() {
     matchloadV(0);
 }
@@ -64,4 +68,8 @@ void Descore::descoreChange() {
 
 void Descore::calibrate() {
     descoreV(0);
+}
+
+bool Descore::descoreValue() {
+    return descoreOut;
 }

@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "rightSeven",
+    "project_name": "jiasol",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -592,8 +592,8 @@
       }
     },
     "upload_options": {
-      "description": "rightSeven",
-      "slot": 3,
+      "description": "jiasol",
+      "slot": 1,
       "icon": "pros"
     },
     "use_early_access": false

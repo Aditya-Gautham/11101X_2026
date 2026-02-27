@@ -11,6 +11,7 @@ void leftSevenLong();
 void rightFourLongThreeLow();
 void rightSevenLong();
 void rightFourLong();
+void rightNineLong();
 void soloWinPoint();
 
 

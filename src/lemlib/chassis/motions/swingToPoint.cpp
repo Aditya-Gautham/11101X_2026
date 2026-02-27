@@ -102,6 +102,7 @@ void lemlib::Chassis::swingToPoint(float x, float y, DriveSide lockedSide, int t
     // stop the drivetrain
     drivetrain.leftMotors->move(0);
     drivetrain.rightMotors->move(0);
+
     // set distTraveled to -1 to indicate that the function has finished
     distTraveled = -1;
     this->endMotion();

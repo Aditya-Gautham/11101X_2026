@@ -5,14 +5,14 @@
 class Intake {
     public:
         //constructor
-        Intake(pros::Motor bottomIntakeMotors, pros::Motor topIntakeMotors, pros::Optical colorSensor, pros::adi::DigitalOut intakePneumatic);
+        Intake(pros::MotorGroup& bottomMotorGroup, pros::Motor& topMotor, pros::Optical colorSensor_, pros::adi::DigitalOut intakePneumatic_);
 
         //initialize
         void calibrate(bool red);
 
-        //intake Motors
-        pros::Motor bottomIntakeMotors;
-        pros::Motor topIntakeMotors;
+        //intake Motors (store as references to avoid copying PROS objects)
+        pros::MotorGroup& bottomIntakeMotors;
+        pros::Motor& topIntakeMotors;
 
         //color sensor
         pros::Optical colorSensor;

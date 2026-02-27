@@ -19,14 +19,15 @@ class OdomSensors {
     public:
 
         OdomSensors(TrackingWheel* vertical1, TrackingWheel* vertical2, TrackingWheel* horizontal1,
-                    TrackingWheel* horizontal2, pros::Imu* imu, pros::Distance* distanceLeftBack, pros::Distance* distanceLeftFront);
+                    TrackingWheel* horizontal2, pros::Imu* imu, pros::Distance* distanceLeft, pros::Distance* distanceRight, pros::Distance* distanceFront);
         TrackingWheel* vertical1;
         TrackingWheel* vertical2;
         TrackingWheel* horizontal1;
         TrackingWheel* horizontal2;
         pros::Imu* imu;
-        pros::Distance* distanceLeftBack;
-        pros::Distance* distanceLeftFront;
+        pros::Distance* distanceLeft;
+        pros::Distance* distanceRight;
+        pros::Distance* distanceFront;
 };
 
 /**
@@ -313,6 +314,8 @@ struct MoveToPointParams {
         int pidSelector = 0;
         /** decides if distance clamping is enabled */
         bool clampDistance = true;
+        /** decides to drive carrot or straight */
+        bool chasePoint = true;
 };
 
 // default drive curve
@@ -929,8 +932,13 @@ class Chassis {
         /**
          * reset with distance sensor
          */
-        void resetWithDistance(double wall);
-        double resetAngleWithSelfCorrectionInches();
+
+        void resetPositionLeft();
+        void resetPositionRight();
+        void resetPositionFront();
+        
+        // The master logic function used by the wrappers above
+        void resetPositionWithSensor(pros::Distance* sensor, double sensor_offset, double sensor_angle_offset);
        
         PID lateralPID;
         /**

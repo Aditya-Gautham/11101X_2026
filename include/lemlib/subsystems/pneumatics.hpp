@@ -14,6 +14,7 @@ class Matchload {
         void matchloadV(int value);
         void matchloadChange();
         void calibrate();
+        bool matchloadValue();
  
         //matchload variables
         bool matchloadOut = false;
@@ -48,6 +49,7 @@ class Descore {
         void descoreV(int value);
         void descoreChange();
         void calibrate();
+        bool descoreValue();
  
         //descore variables
         bool descoreOut = false;

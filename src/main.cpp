@@ -7,13 +7,16 @@
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-pros::MotorGroup leftMotors({-13, -12, -11}, pros::MotorGearset::blue); 
-pros::MotorGroup rightMotors({18, 20, 19}, pros::MotorGearset::blue); 
-pros::Motor bottomIntakeMotors(16, pros::MotorGearset::blue);
-pros::Motor topIntakeMotors(17, pros::MotorGearset::blue);
+pros::MotorGroup leftMotors({-11, -12, -13}, pros::MotorGearset::blue);
+pros::MotorGroup rightMotors({14, 15, 16}, pros::MotorGearset::blue);
+pros::MotorGroup bottomIntakeMotors({17, -18}, pros::MotorGearset::blue);
+//pros::Motor bottomIntakeMotors(-18, -19, pros::MotorGearset::blue);
+pros::Motor topIntakeMotors(19, pros::MotorGearset::blue);
+// middleIntakeMotors removed — now part of bottomIntakeMotors MotorGroup
+
 
 pros::adi::DigitalOut matchLoadPneumatic('h');
-pros::adi::DigitalOut intakePneumatic('g');
+pros::adi::DigitalOut intakePneumatic('d');
 pros::adi::DigitalOut wingPneumatic('f');
 pros::adi::DigitalOut descorePneumatic('e');
 
@@ -30,9 +33,9 @@ lemlib::TrackingWheel horizontal(&horizontalEnc, 1.99, -2.25);
 // vertical tracking wheel. 2.75" diameter, 2.5" offset, left of the robot (negative)
 lemlib::TrackingWheel vertical(&verticalEnc, 1.99, -0.4125);
 
-pros::Distance distanceLeftBack(7);
-pros::Distance distanceLeftFront(10);
-pros::Distance distanceBack(10);
+pros::Distance distanceLeft(2);
+pros::Distance distanceRight(9);
+pros::Distance distanceFront(1);
 
 lemlib::Drivetrain drivetrain(&leftMotors,
                             &rightMotors,
@@ -145,8 +148,9 @@ lemlib::OdomSensors sensors(&vertical,
                             &horizontal, 
                             nullptr,
                             &imu,
-                            &distanceLeftBack,
-                            &distanceLeftFront
+                            &distanceLeft,
+                            &distanceRight,
+                            &distanceFront
 );
 
 // input curve for throttle input during driver control
@@ -176,8 +180,6 @@ void initialize() {
     pros::screen::set_eraser(pros::Color::black);
     pros::screen::set_pen(pros::Color::white);
     chassis.calibrate();
-    
-
     // red alliance - true, blue alliance - false
     intake.calibrate(true);
     matchload.calibrate();
@@ -212,21 +214,21 @@ void autonomous() {
             pros::screen::print(pros::E_TEXT_MEDIUM, 0, "x: %.2f",pose.x);
             pros::screen::print(pros::E_TEXT_MEDIUM, 1, "y: %.2f", pose.y);
             pros::screen::print(pros::E_TEXT_MEDIUM, 2, "theta: %.2f", pose.theta);
-            pros::screen::print(pros::E_TEXT_MEDIUM, 3, "battery: %.2f", pros::battery::get_capacity());
             pros::delay(20); // Update every 20ms
         }
     });
 
     if (runAuton)
     {
-    //odomTest();
+    odomTest();
     //leftFourLongFourMiddle();
     //leftFourLongFourMiddleWing();
     //leftFourLong();
     //leftSevenLong();
     //rightFourLongThreeLow();
-    rightSevenLong();
+    //rightSevenLong();
     //rightFourLong();
+    //rightNineLong();
     //soloWinPoint();
     //skills();
     }
@@ -238,38 +240,46 @@ void opcontrol() {
     while (true) {
         int vert = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
         int horz = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
-        if (fabs(vert) < 7) vert = 0;
+        if (abs(vert) < 7) vert = 0;
        // if (fabs(horz) < 7) horz = 0;
         chassis.arcade(vert, horz);
 
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1))
         {
+            intake.intakePneumaticV(1);
             intake.scoreHighGoal();
-            intake.intakePneumaticV(0);
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { intake.outtakeBlock(); }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1))
         {
+            intake.intakePneumaticV(0);
             intake.intakeBlock();
-            intake.intakePneumatic.set_value(0);
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2))
         {
             intake.intakeOut();
-            intake.intakePneumaticV(1);
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y))
         {
             intake.intakeOutSkills();
-            intake.intakePneumaticV(1);
         }
         else { intake.stopIntake(); }
 
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
+            if(descore.descoreValue())
+            {
+                descore.descoreV(0);
+                pros::delay(100);
+            }
             matchload.matchloadChange();
         }
 
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+            if(matchload.matchloadValue())
+            {
+                matchload.matchloadV(0);
+                pros::delay(100);
+            }
             descore.descoreChange();
         }
 
