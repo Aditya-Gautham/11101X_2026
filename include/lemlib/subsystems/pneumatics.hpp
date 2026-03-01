@@ -54,3 +54,21 @@ class Descore {
         //descore variables
         bool descoreOut = false;
 };
+
+class IntakeLift {
+    public:
+        //constructor
+        IntakeLift(pros::adi::DigitalOut intakeLiftPneumatic);
+
+        //intake lift pneumatic
+        pros::adi::DigitalOut intakeLiftPneumatic;
+
+        //intake lift Functions
+        void intakeLiftV(int value);
+        void intakeLiftChange();
+        void calibrate();
+        bool intakeLiftValue();
+ 
+        //intake lift variables
+        bool intakeLiftUp = false;
+};

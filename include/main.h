@@ -87,6 +87,7 @@ class Matchload;
 class Wing;
 class Park;
 class Descore;
+class IntakeLift;
 
 // External global objects (defined in main.cpp)
 extern lemlib::Chassis chassis; //normal
@@ -99,6 +100,7 @@ extern Matchload matchload;
 extern Wing wing;
 extern Park park;
 extern Descore descore;
+extern IntakeLift intakeLift;
 #endif
 
 #endif  // _PROS_MAIN_H_

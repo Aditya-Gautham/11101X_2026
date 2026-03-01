@@ -80,8 +80,8 @@ void Intake::intakeOutAuton() {
 }
 
 void Intake::intakeOutSkills() {
-    moveBottomIntake(600);
-    moveTopIntake(200);
+    moveBottomIntake(200);
+    moveTopIntake(-200);
 }
 
 double Intake::intakeTemperature() {

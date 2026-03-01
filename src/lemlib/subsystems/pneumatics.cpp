@@ -73,3 +73,29 @@ void Descore::calibrate() {
 bool Descore::descoreValue() {
     return descoreOut;
 }
+
+IntakeLift::IntakeLift(pros::adi::DigitalOut intakeLiftPneumatic)
+    : intakeLiftPneumatic(intakeLiftPneumatic) {}
+
+void IntakeLift::intakeLiftV(int value) {
+    intakeLiftPneumatic.set_value(value);
+}
+
+void IntakeLift::intakeLiftChange() {
+    if (intakeLiftUp) {
+        intakeLiftV(0);
+        intakeLiftUp = false;
+    }
+    else {
+        intakeLiftV(1);
+        intakeLiftUp = true;
+    }
+}
+
+void IntakeLift::calibrate() {
+    intakeLiftV(0);
+}
+
+bool IntakeLift::intakeLiftValue() {
+    return intakeLiftUp;
+}

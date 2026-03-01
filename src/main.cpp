@@ -11,23 +11,24 @@ pros::MotorGroup leftMotors({-11, -12, -13}, pros::MotorGearset::blue);
 pros::MotorGroup rightMotors({14, 15, 16}, pros::MotorGearset::blue);
 pros::MotorGroup bottomIntakeMotors({17, -18}, pros::MotorGearset::blue);
 //pros::Motor bottomIntakeMotors(-18, -19, pros::MotorGearset::blue);
-pros::Motor topIntakeMotors(19, pros::MotorGearset::blue);
+pros::Motor topIntakeMotors(10, pros::MotorGearset::blue);
 // middleIntakeMotors removed — now part of bottomIntakeMotors MotorGroup
 
 
-pros::adi::DigitalOut matchLoadPneumatic('h');
-pros::adi::DigitalOut intakePneumatic('d');
-pros::adi::DigitalOut wingPneumatic('f');
-pros::adi::DigitalOut descorePneumatic('e');
+pros::adi::DigitalOut matchLoadPneumatic('e');//h
+pros::adi::DigitalOut intakePneumatic('f');//f
+pros::adi::DigitalOut wingPneumatic('h');//e
+pros::adi::DigitalOut descorePneumatic('a');
+pros::adi::DigitalOut intakeLiftPneumatic('g');//g
 
 pros::Imu imu(15);
 
 pros::Optical colorSensor(2);
 
 // horizontal tracking wheel encoder. Rotation sensor, port 20, not reversed
-pros::Rotation horizontalEnc(14);
+pros::Rotation horizontalEnc(20);
 // vertical tracking wheel encoder. Rotation sensor, port 11, reversed
-pros::Rotation verticalEnc(10);
+pros::Rotation verticalEnc(19);
 // horizontal tracking wheel. 2.75" diameter, 5.75" offset, back of the robot (negative)
 lemlib::TrackingWheel horizontal(&horizontalEnc, 1.99, -2.25);
 // vertical tracking wheel. 2.75" diameter, 2.5" offset, left of the robot (negative)
@@ -176,6 +177,8 @@ Wing wing(wingPneumatic);
 
 Descore descore(descorePneumatic);
 
+IntakeLift intakeLift(intakeLiftPneumatic);
+
 void initialize() {
     pros::screen::set_eraser(pros::Color::black);
     pros::screen::set_pen(pros::Color::white);
@@ -249,7 +252,9 @@ void opcontrol() {
             intake.intakePneumaticV(1);
             intake.scoreHighGoal();
         }
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { intake.outtakeBlock(); }
+        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { 
+            intake.outtakeBlock(); 
+        }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1))
         {
             intake.intakePneumaticV(0);
@@ -277,7 +282,7 @@ void opcontrol() {
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
             if(matchload.matchloadValue())
             {
-                matchload.matchloadV(0);
+                matchload.matchloadV(1);
                 pros::delay(100);
             }
             descore.descoreChange();
@@ -286,6 +291,9 @@ void opcontrol() {
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
             wing.wingChange();
         }
+        if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)) {intakeLift.intakeLiftV(1);}
+        if(controller.get_digital_new_release(pros::E_CONTROLLER_DIGITAL_L2)) {intakeLift.intakeLiftV(0);}
         pros::delay(10);
+
     }
 }
