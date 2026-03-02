@@ -21,18 +21,18 @@ pros::adi::DigitalOut wingPneumatic('h');//e
 pros::adi::DigitalOut descorePneumatic('a');
 pros::adi::DigitalOut intakeLiftPneumatic('g');//g
 
-pros::Imu imu(15);
+pros::Imu imu(9);
 
 pros::Optical colorSensor(2);
 
 // horizontal tracking wheel encoder. Rotation sensor, port 20, not reversed
-pros::Rotation horizontalEnc(20);
+pros::Rotation horizontalEnc(-20);
 // vertical tracking wheel encoder. Rotation sensor, port 11, reversed
-pros::Rotation verticalEnc(19);
+pros::Rotation verticalEnc(-19);
 // horizontal tracking wheel. 2.75" diameter, 5.75" offset, back of the robot (negative)
-lemlib::TrackingWheel horizontal(&horizontalEnc, 1.99, -2.25);
+lemlib::TrackingWheel horizontal(&horizontalEnc, 1.99, -3.25);
 // vertical tracking wheel. 2.75" diameter, 2.5" offset, left of the robot (negative)
-lemlib::TrackingWheel vertical(&verticalEnc, 1.99, -0.4125);
+lemlib::TrackingWheel vertical(&verticalEnc, 1.99, -0.375);
 
 pros::Distance distanceLeft(2);
 pros::Distance distanceRight(9);
@@ -59,7 +59,7 @@ lemlib::ControllerSettings linearController(4, // (kP) 4.067
 );
 
 // angular motion controller
-lemlib::ControllerSettings angularController(1.65, // (kP)1.65
+lemlib::ControllerSettings angularController(1.85, // (kP) 1.85
                                              0, // (kI)
                                             11, // (kD)11 10.5
                                              0, // anti windup
@@ -96,7 +96,7 @@ lemlib::ControllerSettings linearControllerCurve(4, // (kP) 4.067
 );
 
 // extra angular motion controller
-lemlib::ControllerSettings angularControllerShort(1.9 , // (kP)1.7 1.6
+lemlib::ControllerSettings angularControllerShort(2.06 , // (kP)1.7 1.6
                                                   0, // (kI)
                                                   11, // (kD)11 10.5
                                                   0, // anti windup
@@ -120,7 +120,7 @@ lemlib::ControllerSettings headingControllerCurve(3, // (kP) 2 1
 );
 
 // extra angular motion controller
-lemlib::ControllerSettings angularController135(  1.57 , // (kP)1.7 1.6
+lemlib::ControllerSettings angularController135(1.69, // (kP)1.7 1.6
                                                   0, // (kI)
                                                   11, // (kD)11 10.5
                                                   0, // anti windup
@@ -132,7 +132,7 @@ lemlib::ControllerSettings angularController135(  1.57 , // (kP)1.7 1.6
 );
 
 // extra angular motion controller
-lemlib::ControllerSettings angularController180(1.46 , // (kP)1.7 1.6
+lemlib::ControllerSettings angularController180(1.6, // (kP)1.7 1.6
                                                   0, // (kI)
                                                   11, // (kD)11 10.5
                                                   0, // anti windup
@@ -200,7 +200,7 @@ ASSET(example_txt); // '.' replaced with "_" to make c++ happy
 void autonomous() {
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
     intake.driverControl = false;
-    intake.intakeJam(true);
+    //intake.intakeJam(true);
     bool runAuton = true;
     if (!horizontalEnc.is_installed()) {
         pros::screen::print(pros::E_TEXT_LARGE, 3, "Horizontal Encoder not installed");
@@ -223,12 +223,12 @@ void autonomous() {
 
     if (runAuton)
     {
-    odomTest();
+    //odomTest();
     //leftFourLongFourMiddle();
     //leftFourLongFourMiddleWing();
     //leftFourLong();
     //leftSevenLong();
-    //rightFourLongThreeLow();
+    rightFourLongThreeLow();
     //rightSevenLong();
     //rightFourLong();
     //rightNineLong();

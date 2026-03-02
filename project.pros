@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "jiasol",
+    "project_name": "bhadbabie",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -592,7 +592,7 @@
       }
     },
     "upload_options": {
-      "description": "jiasol",
+      "description": "bhadbabie",
       "slot": 2,
       "icon": "pros"
     },

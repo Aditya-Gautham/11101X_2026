@@ -43,6 +43,8 @@ class Intake {
 
         void intakeOutAuton();
 
+        void outtakeBlockAuton();
+
         void intakeOutSkills();
 
         double intakeTemperature();

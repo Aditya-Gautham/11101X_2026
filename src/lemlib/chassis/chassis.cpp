@@ -144,14 +144,17 @@ lemlib::Pose lemlib::Chassis::getPose(bool radians, bool standardPos) {
 }
 
 void lemlib::Chassis::waitUntil(float dist) {
-    // do while to give the thread time to start
-    do pros::delay(10);
-    while (distTraveled <= dist && distTraveled != -1);
+    // repeatedly yield so other tasks (motion thread) can run
+    do {
+        pros::delay(10);
+    } while (distTraveled <= dist && distTraveled != -1);
 }
 
 void lemlib::Chassis::waitUntilDone() {
-    do pros::delay(10);
-    while (distTraveled != -1);
+    // repeatedly yield until motion indicates completion
+    do {
+        pros::delay(10);
+    } while (distTraveled != -1);
 }
 
 void lemlib::Chassis::requestMotionStart() {

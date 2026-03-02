@@ -40,6 +40,11 @@ void Intake::outtakeBlock() {
     moveTopIntake(-600);
 }
 
+void Intake::outtakeBlockAuton() {
+    moveBottomIntake(-300);
+    moveTopIntake(-600);
+}
+
 void Intake::scoreMiddleGoal() {
     moveBottomIntake(200);
     moveTopIntake(-200);
@@ -76,7 +81,7 @@ void Intake::intakeOutAuton() {
     //moveTopIntake(400);
     //moveTopIntake(300);
     //just for skills
-    moveTopIntake(500);
+    moveTopIntake(-150);
 }
 
 void Intake::intakeOutSkills() {
