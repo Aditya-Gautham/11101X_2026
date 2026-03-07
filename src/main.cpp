@@ -225,7 +225,7 @@ void autonomous() {
     if (runAuton)
     {
     //odomTest();
-    leftFourLongFourMiddle();
+    //leftFourLongFourMiddle();
     //leftFourLongFourMiddleWing();
     //leftFourLong();
     //leftSevenLong();
@@ -235,7 +235,7 @@ void autonomous() {
     //rightFourLong();
     //rightNineLong();
     //rightThreeGoal();
-    //soloWinPoint();
+    soloWinPoint();
     //skills();
     }
 }
@@ -255,7 +255,7 @@ void opcontrol() {
         int horz = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
         if (abs(vert) < 7) vert = 0;
        // if (fabs(horz) < 7) horz = 0;
-        chassis.arcade(vert, (horz * 0.8));
+        chassis.arcade(vert, horz);
 
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
             intake.outtakeBlock();

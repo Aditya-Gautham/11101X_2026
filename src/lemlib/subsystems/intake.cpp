@@ -91,13 +91,13 @@ void Intake::intakeOut() {
 }
 
 void Intake::intakeOutAuton() {
-    moveBottomIntake(400);
-    moveMiddleIntake(400);
+    moveBottomIntake(200);
+    moveMiddleIntake(150);
     //moveTopIntake(250);
     //moveTopIntake(400);
     //moveTopIntake(300);
     //just for skills
-    moveTopIntake(-300);
+    moveTopIntake(-50);
 }
 
 void Intake::intakeOutAutonSlow() {
