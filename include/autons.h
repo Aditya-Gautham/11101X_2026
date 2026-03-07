@@ -8,10 +8,12 @@ void leftFourLongFourMiddle();
 void leftFourLongFourMiddleWing();
 void leftFourLong();
 void leftSevenLong();
+void leftThreeGoal();
 void rightFourLongThreeLow();
 void rightSevenLong();
 void rightFourLong();
 void rightNineLong();
+void rightThreeGoal();
 void soloWinPoint();
 
 

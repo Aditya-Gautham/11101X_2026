@@ -9,9 +9,10 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 pros::MotorGroup leftMotors({-11, -12, -13}, pros::MotorGearset::blue);
 pros::MotorGroup rightMotors({14, 15, 16}, pros::MotorGearset::blue);
-pros::MotorGroup bottomIntakeMotors({17, -18}, pros::MotorGearset::blue);
+pros::Motor bottomIntakeMotor(17, pros::MotorGearset::blue);
+pros::Motor middleIntakeMotor(-18, pros::MotorGearset::blue);
 //pros::Motor bottomIntakeMotors(-18, -19, pros::MotorGearset::blue);
-pros::Motor topIntakeMotors(10, pros::MotorGearset::blue);
+pros::Motor topIntakeMotor(10, pros::MotorGearset::blue);
 // middleIntakeMotors removed — now part of bottomIntakeMotors MotorGroup
 
 
@@ -35,7 +36,7 @@ lemlib::TrackingWheel horizontal(&horizontalEnc, 1.99, -3.25);
 lemlib::TrackingWheel vertical(&verticalEnc, 1.99, -0.375);
 
 pros::Distance distanceLeft(2);
-pros::Distance distanceRight(9);
+pros::Distance distanceRight(1);
 pros::Distance distanceFront(1);
 
 lemlib::Drivetrain drivetrain(&leftMotors,
@@ -169,7 +170,7 @@ lemlib::ExpoDriveCurve steerCurve(10, // joystick deadband out of 127
 // create the chassis
 lemlib::Chassis chassis(drivetrain, linearController, angularController, headingController, linearControllerCurve, angularControllerShort, angularController135, angularController180, headingControllerCurve, sensors);
 
-Intake intake(bottomIntakeMotors, topIntakeMotors, colorSensor, intakePneumatic);
+Intake intake(bottomIntakeMotor, middleIntakeMotor, topIntakeMotor, colorSensor, intakePneumatic);
 
 Matchload matchload(matchLoadPneumatic);
 
@@ -224,14 +225,16 @@ void autonomous() {
     if (runAuton)
     {
     //odomTest();
-    //leftFourLongFourMiddle();
+    leftFourLongFourMiddle();
     //leftFourLongFourMiddleWing();
     //leftFourLong();
     //leftSevenLong();
-    rightFourLongThreeLow();
+    //leftThreeGoal();
+    //rightFourLongThreeLow();
     //rightSevenLong();
     //rightFourLong();
     //rightNineLong();
+    //rightThreeGoal();
     //soloWinPoint();
     //skills();
     }
@@ -240,53 +243,90 @@ void autonomous() {
 void opcontrol() {
     intake.driverControl = true;
     intake.colorSortActive = false;
+    // intake hold state machine for L1/R2
+    enum IntakeHoldState { IH_Off, IH_PreReverse, IH_Intake };
+    IntakeHoldState holdState = IH_Off;
+    unsigned long holdStart = 0;
+    bool holdSourceL1 = false; // true if the current hold was started by L1, false if R2
+    bool prevL1 = false;  // still track to identify transitions if needed
+    bool prevR2 = false;
     while (true) {
         int vert = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
         int horz = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
         if (abs(vert) < 7) vert = 0;
        // if (fabs(horz) < 7) horz = 0;
-        chassis.arcade(vert, horz);
+        chassis.arcade(vert, (horz * 0.8));
 
-        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1))
-        {
-            intake.intakePneumaticV(1);
-            intake.scoreHighGoal();
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+            intake.outtakeBlock();
         }
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { 
-            intake.outtakeBlock(); 
+        // handle holds on either L1 or R2 with non-blocking timer
+        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) ||
+                controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2))
+        {
+            bool curL1 = controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1);
+            bool curR2 = controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2);
+            bool active = curL1 || curR2;
+
+            if (active) {
+                if (holdState == IH_Off) {
+                    holdState = IH_PreReverse;
+                    holdStart = pros::millis();
+                    intake.moveBottomIntake(-200);
+                    holdSourceL1 = curL1;
+                }
+                if (holdState == IH_PreReverse) {
+                    if (pros::millis() - holdStart >= 100) {
+                        holdState = IH_Intake;
+                    }
+                }
+                if (holdState == IH_Intake) {
+                    if (holdSourceL1) {
+                        intake.intakePneumaticV(1);
+                        intake.scoreHighGoal();
+                    } else {
+                        intake.scoreMiddleGoal();
+                    }
+                }
+            }
+
+            prevL1 = curL1; // track L1 now
+            prevR2 = curR2;
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1))
         {
             intake.intakePneumaticV(0);
             intake.intakeBlock();
         }
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2))
-        {
-            intake.intakeOut();
-        }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y))
         {
             intake.intakeOutSkills();
         }
-        else { intake.stopIntake(); }
+        else {
+            intake.stopIntake();
+            // reset state and prev flags when no button is held
+            holdState = IH_Off;
+            prevL1 = prevR2 = false;
+        }
 
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
-            if(descore.descoreValue())
-            {
-                descore.descoreV(0);
-                pros::delay(100);
-            }
+            //if(descore.descoreValue())
+            //{
+            //    descore.descoreV(0);
+            //    pros::delay(100);
+            //}
             matchload.matchloadChange();
         }
 
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-            if(matchload.matchloadValue())
-            {
-                matchload.matchloadV(1);
-                pros::delay(100);
-            }
+            //if(matchload.matchloadValue())
+            //{
+            //    matchload.matchloadV(1);
+            //    pros::delay(100);
+            //}
             descore.descoreChange();
         }
+
 
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
             wing.wingChange();

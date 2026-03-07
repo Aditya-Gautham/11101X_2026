@@ -1,9 +1,10 @@
 #include "main.h"
 #include "pros/motors.h"
 
-Intake::Intake(pros::MotorGroup& bottomMotorGroup, pros::Motor& topMotor, pros::Optical colorSensor_, pros::adi::DigitalOut intakePneumatic_)
-        :   bottomIntakeMotors(bottomMotorGroup),
-            topIntakeMotors(topMotor),
+Intake::Intake(pros::Motor& bottomMotor, pros::Motor& middleMotor, pros::Motor& topMotor, pros::Optical colorSensor_, pros::adi::DigitalOut intakePneumatic_)
+        :   bottomIntakeMotor(bottomMotor),
+            middleIntakeMotor(middleMotor),
+            topIntakeMotor(topMotor),
             colorSensor(colorSensor_),
             intakePneumatic(intakePneumatic_) {}
 
@@ -11,19 +12,24 @@ void Intake::calibrate(bool red) {
     colorSortActive = true;
     intakePneumaticV(0);
     intakePneumaticActive = true;
-    bottomIntakeMotors.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-    topIntakeMotors.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    bottomIntakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    middleIntakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    topIntakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     //if (red) { redColorSort(); }
     //else { blueColorSort(); }
 }
 
 void Intake::moveBottomIntake(double velocity){
     desiredBottomVelocity = velocity;
-    bottomIntakeMotors.move_velocity(velocity);
+    bottomIntakeMotor.move_velocity(velocity);
+}
+
+void Intake::moveMiddleIntake(double velocity){
+    middleIntakeMotor.move_velocity(velocity);
 }
 
 void Intake::moveTopIntake(double velocity){
-    topIntakeMotors.move_velocity(velocity);
+    topIntakeMotor.move_velocity(velocity);
 }
 
 void Intake::intakePneumaticV(int value) {
@@ -32,65 +38,86 @@ void Intake::intakePneumaticV(int value) {
 
 void Intake::intakeBlock() {
     moveBottomIntake(600);
+    moveMiddleIntake(600);
     moveTopIntake(600);
 }
 
 void Intake::outtakeBlock() {
     moveBottomIntake(-600);
-    moveTopIntake(-600);
+    moveMiddleIntake(-600);
+    //moveTopIntake(-600);
 }
 
 void Intake::outtakeBlockAuton() {
-    moveBottomIntake(-300);
+    moveBottomIntake(-125);
+    moveMiddleIntake(-125);
     moveTopIntake(-600);
 }
 
 void Intake::scoreMiddleGoal() {
     moveBottomIntake(200);
+    moveMiddleIntake(200);
     moveTopIntake(-200);
 }
 
 void Intake::scoreHighGoal() {
     moveBottomIntake(600);
+    moveMiddleIntake(600);
     moveTopIntake(600);
 }
 
 void Intake::stopIntake() {
     moveBottomIntake(0);
+    moveMiddleIntake(0);
     moveTopIntake(0);
 }
 
 void Intake::spitOut() {
     moveBottomIntake(600);
+    moveMiddleIntake(600);
     moveTopIntake(-600);
 }
 
 void Intake::scoreMiddleHigh() {
     moveBottomIntake(0);
+    moveMiddleIntake(0);
     moveTopIntake(100);
 }
 
 void Intake::intakeOut() {
     moveBottomIntake(600);
+    moveMiddleIntake(600);
     moveTopIntake(-600);
 }
 
 void Intake::intakeOutAuton() {
-    moveBottomIntake(600);
+    moveBottomIntake(400);
+    moveMiddleIntake(400);
     //moveTopIntake(250);
     //moveTopIntake(400);
     //moveTopIntake(300);
     //just for skills
-    moveTopIntake(-150);
+    moveTopIntake(-300);
+}
+
+void Intake::intakeOutAutonSlow() {
+    moveBottomIntake(600);
+    moveMiddleIntake(600);
+    //moveTopIntake(250);
+    //moveTopIntake(400);
+    //moveTopIntake(300);
+    //just for skills
+    moveTopIntake(-75);
 }
 
 void Intake::intakeOutSkills() {
     moveBottomIntake(200);
+    moveMiddleIntake(200);
     moveTopIntake(-200);
 }
 
 double Intake::intakeTemperature() {
-    return bottomIntakeMotors.get_temperature();
+    return bottomIntakeMotor.get_temperature();
 }
 
 void Intake::intakePneumaticChange() {
@@ -165,7 +192,7 @@ void Intake::intakeJam(bool async) {
     int timer = 0;
     while (!driverControl) {
         // Check if bottom intake is trying to run forward but is jammed (low actual velocity)
-        if (bottomIntakeMotors.get_target_velocity() > 0 && bottomIntakeMotors.get_actual_velocity() < 25) {
+        if (bottomIntakeMotor.get_target_velocity(0) > 0 && bottomIntakeMotor.get_actual_velocity(0) < 25) {
             timer += 10;
         }
         else {
@@ -183,14 +210,14 @@ void Intake::intakeJam(bool async) {
             double savedBottomVelocity = desiredBottomVelocity;
             
             // Reverse only the bottom motors for unjamming (don't update desiredBottomVelocity)
-            bottomIntakeMotors.move_velocity(-600);
+            bottomIntakeMotor.move_velocity(-600);
             pros::delay(175);
             
             // Restore the desired bottom velocity
             // Check if desiredBottomVelocity changed during the delay (autonomous code updated it)
             // If it did, use the new value; otherwise use the saved value
             double velocityToRestore = (desiredBottomVelocity != savedBottomVelocity) ? desiredBottomVelocity : savedBottomVelocity;
-            bottomIntakeMotors.move_velocity(velocityToRestore);
+            bottomIntakeMotor.move_velocity(velocityToRestore);
             desiredBottomVelocity = velocityToRestore;
             
             // Reset timer

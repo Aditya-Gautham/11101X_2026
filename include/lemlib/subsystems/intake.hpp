@@ -5,14 +5,15 @@
 class Intake {
     public:
         //constructor
-        Intake(pros::MotorGroup& bottomMotorGroup, pros::Motor& topMotor, pros::Optical colorSensor_, pros::adi::DigitalOut intakePneumatic_);
+        Intake(pros::Motor& bottomMotor, pros::Motor& middleMotor, pros::Motor& topMotor, pros::Optical colorSensor_, pros::adi::DigitalOut intakePneumatic_);
 
         //initialize
         void calibrate(bool red);
 
         //intake Motors (store as references to avoid copying PROS objects)
-        pros::MotorGroup& bottomIntakeMotors;
-        pros::Motor& topIntakeMotors;
+        pros::Motor& bottomIntakeMotor;
+        pros::Motor& middleIntakeMotor;
+        pros::Motor& topIntakeMotor;
 
         //color sensor
         pros::Optical colorSensor;
@@ -22,6 +23,8 @@ class Intake {
 
         //intake Functions
         void moveBottomIntake(double velocity);
+
+        void moveMiddleIntake(double velocity);
 
         void moveTopIntake(double velocity);
 
@@ -46,6 +49,8 @@ class Intake {
         void outtakeBlockAuton();
 
         void intakeOutSkills();
+
+        void intakeOutAutonSlow();
 
         double intakeTemperature();
 
