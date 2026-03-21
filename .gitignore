@@ -1,0 +1,22 @@
+# Build artifacts
+bin/
+build/
+out/
+
+# Dependency + object files
+*.o
+*.d
+*.a
+
+# PROS / firmware build stuff
+firmware/*.elf
+firmware/*.bin
+
+# macOS junk
+.DS_Store
+
+# VSCode
+.vscode/
+
+# Compile commands (optional)
+compile_commands.json
