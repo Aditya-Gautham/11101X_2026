@@ -4,14 +4,16 @@
       "name": "PROS Project",
       "includePath": [
         "${workspaceFolder}/**",
-        "/Users/adityagautham/Documents/GitHub/11101X_2026/include"
+        "/Users/adityagautham/Documents/GitHub/11101X_2026/include",
+        "/Users/prahladk./Downloads/11101X_2026/include",
+        "/Users/vihaanasthi/Downloads/11101X_2026/include"
       ],
       "defines": [
         "_DEBUG",
         "UNICODE",
         "_UNICODE"
       ],
-      "compilerPath": "/Users/adityagautham/Library/Application Support/Code/User/globalStorage/sigbots.pros/install/pros-toolchain-macos/bin/arm-none-eabi-g++",
+      "compilerPath": "/Users/vihaanasthi/Library/Application Support/Code/User/globalStorage/sigbots.pros/install/pros-toolchain-macos/bin/arm-none-eabi-g++",
       "cStandard": "gnu11",
       "cppStandard": "gnu++20",
       "intelliSenseMode": "gcc-arm",
@@ -20,7 +22,7 @@
       ],
       "browse": {
         "path": [
-          "/Users/adityagautham/Documents/GitHub/11101X_2026"
+          "/Users/vihaanasthi/Downloads/11101X_2026"
         ],
         "limitSymbolsToIncludedHeaders": true,
         "databaseFilename": ""

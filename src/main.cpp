@@ -7,29 +7,29 @@
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-pros::MotorGroup leftMotors({-11, -12, -13}, pros::MotorGearset::blue);
-pros::MotorGroup rightMotors({14, 15, 16}, pros::MotorGearset::blue);
-pros::Motor bottomIntakeMotor(17, pros::MotorGearset::blue);
-pros::Motor middleIntakeMotor(-18, pros::MotorGearset::blue);
+pros::MotorGroup leftMotors({-18, -16, -6}, pros::MotorGearset::blue);
+pros::MotorGroup rightMotors({1, 13, 2}, pros::MotorGearset::blue);
+pros::Motor bottomIntakeMotor(12, pros::MotorGearset::blue);
+pros::Motor middleIntakeMotor(-15, pros::MotorGearset::blue);
 //pros::Motor bottomIntakeMotors(-18, -19, pros::MotorGearset::blue);
-pros::Motor topIntakeMotor(10, pros::MotorGearset::blue);
+pros::Motor topIntakeMotor(11, pros::MotorGearset::blue);
 // middleIntakeMotors removed — now part of bottomIntakeMotors MotorGroup
 
 
-pros::adi::DigitalOut matchLoadPneumatic('e');//h
-pros::adi::DigitalOut intakePneumatic('f');//f
-pros::adi::DigitalOut wingPneumatic('h');//e
-pros::adi::DigitalOut descorePneumatic('a');
-pros::adi::DigitalOut intakeLiftPneumatic('g');//g
+pros::adi::DigitalOut matchLoadPneumatic('a');//h
+pros::adi::DigitalOut intakePneumatic('d');//f
+pros::adi::DigitalOut wingPneumatic('c');//e
+pros::adi::DigitalOut descorePneumatic('e');
+pros::adi::DigitalOut intakeLiftPneumatic('b');//g
 
-pros::Imu imu(9);
+pros::Imu imu(7);
 
 pros::Optical colorSensor(2);
 
 // horizontal tracking wheel encoder. Rotation sensor, port 20, not reversed
-pros::Rotation horizontalEnc(-20);
+pros::Rotation horizontalEnc(-14);
 // vertical tracking wheel encoder. Rotation sensor, port 11, reversed
-pros::Rotation verticalEnc(-19);
+pros::Rotation verticalEnc(-17);
 // horizontal tracking wheel. 2.75" diameter, 5.75" offset, back of the robot (negative)
 lemlib::TrackingWheel horizontal(&horizontalEnc, 1.99, -3.25);
 // vertical tracking wheel. 2.75" diameter, 2.5" offset, left of the robot (negative)
@@ -310,20 +310,20 @@ void opcontrol() {
         }
 
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
-            //if(descore.descoreValue())
-            //{
-            //    descore.descoreV(0);
-            //    pros::delay(100);
-            //}
+            if(descore.descoreValue())
+            {
+                descore.descoreV(0);
+                pros::delay(100);
+            }
             matchload.matchloadChange();
         }
 
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-            //if(matchload.matchloadValue())
-            //{
-            //    matchload.matchloadV(1);
-            //    pros::delay(100);
-            //}
+            if(matchload.matchloadValue())
+            {
+                matchload.matchloadV(1);
+                pros::delay(100);
+            }
             descore.descoreChange();
         }
 

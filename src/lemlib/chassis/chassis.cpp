@@ -204,7 +204,8 @@ void lemlib::Chassis::setBrakeMode(pros::motor_brake_mode_e mode) {
 // Distance sensor reset logic
 const float field_half_size = 70.25;
 
-void lemlib::Chassis::resetPositionWithSensor(pros::Distance* sensor, double sensor_offset, double sensor_angle_offset) {
+void lemlib::Chassis::resetPositionWithSensor(pros::Distance* sensor, 
+    double sensor_offset, double sensor_angle_offset) {
     if (sensor == nullptr) return;
     
     // 1. SAFE READ FILTERING

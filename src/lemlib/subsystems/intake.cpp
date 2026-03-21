@@ -45,13 +45,13 @@ void Intake::intakeBlock() {
 void Intake::outtakeBlock() {
     moveBottomIntake(-600);
     moveMiddleIntake(-600);
-    //moveTopIntake(-600);
+    moveTopIntake(-600);
 }
 
 void Intake::outtakeBlockAuton() {
-    moveBottomIntake(-125);
-    moveMiddleIntake(-125);
-    moveTopIntake(-600);
+    moveBottomIntake(-25);
+    moveMiddleIntake(-25);
+    moveTopIntake(-200);
 }
 
 void Intake::scoreMiddleGoal() {
@@ -97,23 +97,23 @@ void Intake::intakeOutAuton() {
     //moveTopIntake(400);
     //moveTopIntake(300);
     //just for skills
-    moveTopIntake(-50);
+    moveTopIntake(-75);
 }
 
 void Intake::intakeOutAutonSlow() {
-    moveBottomIntake(600);
-    moveMiddleIntake(600);
+    moveBottomIntake(300);
+    moveMiddleIntake(200);
     //moveTopIntake(250);
     //moveTopIntake(400);
     //moveTopIntake(300);
     //just for skills
-    moveTopIntake(-75);
+    moveTopIntake(-100);
 }
 
 void Intake::intakeOutSkills() {
     moveBottomIntake(200);
     moveMiddleIntake(200);
-    moveTopIntake(-200);
+    moveTopIntake(-75);
 }
 
 double Intake::intakeTemperature() {
