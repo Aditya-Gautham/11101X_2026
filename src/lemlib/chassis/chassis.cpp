@@ -211,12 +211,10 @@ void lemlib::Chassis::resetPositionWithSensor(pros::Distance* sensor,
     // 1. SAFE READ FILTERING
     int rawMm = sensor->get_distance();
     // Reject error codes (0), out of range (9999), or values over 2000mm
-    if (rawMm <= 20 || rawMm > 2000) return; 
+    if (rawMm <= 30 || rawMm > 2000) return; 
 
     double sensorReading = rawMm / 25.4;
     
-    // Reject readings under 1.5 inches (sensor blind spot)
-    if (sensorReading < 1.5) return;
 
     // 2. Get current pose and normalize heading
     Pose pose = this->getPose(); 
@@ -250,14 +248,13 @@ void lemlib::Chassis::resetPositionWithSensor(pros::Distance* sensor,
         wallCoordinate = field_half_size;
     }
 
-    // 4. THE 5-DEGREE GUARD
-    double angleDiff = fabs(totalAngleRad - targetWallAngleRad);
+    // 4. THE 8-DEGREE GUARD
+    double angleDiff = fabs(normalizedAngle - targetWallAngleRad);
     if (angleDiff > M_PI) angleDiff = 2 * M_PI - angleDiff;
-    if (angleDiff > (5.0 * M_PI / 180.0)) return; 
+    if (angleDiff > (8.0 * M_PI / 180.0)) return; 
 
     // 5. COSINE CORRECTION
-    double totalDist = sensorReading + sensor_offset;
-    double correctedDist = totalDist * cos(angleDiff);
+    double correctedDist = (sensorReading * cos(angleDiff)) + sensor_offset;
     
     // 6. AREA VALIDATION (Sanity Check)
     double calculatedPos = wallCoordinate - (correctedDist * (wallCoordinate > 0 ? 1 : -1));
@@ -274,4 +271,20 @@ void lemlib::Chassis::resetPositionWithSensor(pros::Distance* sensor,
         // Update Y, keep X exactly as it was
         this->setPose(pose.x, calculatedPos, pose.theta);
     }
+}
+
+constexpr double LEFT_SENSOR_OFFSET  = 2.88;
+constexpr double RIGHT_SENSOR_OFFSET = 0.0;
+constexpr double FRONT_SENSOR_OFFSET = 0.0;
+
+void lemlib::Chassis::resetPositionLeft() {
+    resetPositionWithSensor(sensors.distanceLeft, LEFT_SENSOR_OFFSET, -90.0);
+}
+
+void lemlib::Chassis::resetPositionRight() {
+    resetPositionWithSensor(sensors.distanceRight, RIGHT_SENSOR_OFFSET, 90.0);
+}
+
+void lemlib::Chassis::resetPositionFront() {
+    resetPositionWithSensor(sensors.distanceFront, FRONT_SENSOR_OFFSET, 5.2);
 }

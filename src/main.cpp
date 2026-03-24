@@ -35,9 +35,9 @@ lemlib::TrackingWheel horizontal(&horizontalEnc, 1.99, -3.25);
 // vertical tracking wheel. 2.75" diameter, 2.5" offset, left of the robot (negative)
 lemlib::TrackingWheel vertical(&verticalEnc, 1.99, -0.375);
 
-pros::Distance distanceLeft(2);
-pros::Distance distanceRight(1);
-pros::Distance distanceFront(1);
+pros::Distance distanceLeft(20);
+pros::Distance distanceRight(8);
+pros::Distance distanceFront(9);
 
 lemlib::Drivetrain drivetrain(&leftMotors,
                             &rightMotors,
@@ -224,7 +224,7 @@ void autonomous() {
 
     if (runAuton)
     {
-    //odomTest();
+    odomTest();
     //leftFourLongFourMiddle();
     //leftFourLongFourMiddleWing();
     //leftFourLong();
@@ -235,7 +235,7 @@ void autonomous() {
     //rightFourLong();
     //rightNineLong();
     //rightThreeGoal();
-    soloWinPoint();
+    //soloWinPoint();
     //skills();
     }
 }
