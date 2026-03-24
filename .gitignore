@@ -2,6 +2,7 @@
 bin/
 build/
 out/
+.cache/
 
 # Dependency + object files
 *.o
