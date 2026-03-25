@@ -36,7 +36,7 @@ void Intake::intakePneumaticV(int value) {
     intakePneumatic.set_value(value);
 }
 
-void Intake::intakeBlock() {
+void Intake::hoard() {
     moveBottomIntake(600);
     moveMiddleIntake(600);
     moveTopIntake(600);
@@ -72,18 +72,6 @@ void Intake::stopIntake() {
     moveTopIntake(0);
 }
 
-void Intake::spitOut() {
-    moveBottomIntake(600);
-    moveMiddleIntake(600);
-    moveTopIntake(-600);
-}
-
-void Intake::intakeOut() {
-    moveBottomIntake(600);
-    moveMiddleIntake(600);
-    moveTopIntake(-600);
-}
-
 void Intake::intakeOutAuton() {
     moveBottomIntake(200);
     moveMiddleIntake(150);
@@ -108,10 +96,6 @@ void Intake::intakeOutSkills() {
     moveBottomIntake(200);
     moveMiddleIntake(200);
     moveTopIntake(-75);
-}
-
-double Intake::intakeTemperature() {
-    return bottomIntakeMotor.get_temperature();
 }
 
 void Intake::intakePneumaticChange() {
@@ -151,7 +135,7 @@ void Intake::redColorSort() {
     while (colorSortActive) {
         if (colorDetected(true)) {
             while (colorDetected(true)) {
-                spitOut();
+                outtake();
                 pros::delay(10);
             } 
             pros::delay(250);
@@ -167,7 +151,7 @@ void Intake::blueColorSort() {
     while (colorSortActive) {
         if (colorDetected(false)) {
             while (colorDetected(false)) {
-                spitOut();
+                outtake();
                 pros::delay(10);
             } 
             pros::delay(250);

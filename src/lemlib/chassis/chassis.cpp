@@ -261,7 +261,7 @@ void lemlib::Chassis::resetPositionWithSensor(pros::Distance* sensor,
     double currentPos = resettingX ? pose.x : pose.y;
 
     // Reject if the sensor data suggests a jump larger than 12 inches
-    if (fabs(calculatedPos - currentPos) > 12.0) return;
+    //if (fabs(calculatedPos - currentPos) > 12.0) return;
 
     // 7. Apply to LemLib Pose - AXIS ISOLATED
     if (resettingX) {
@@ -274,8 +274,8 @@ void lemlib::Chassis::resetPositionWithSensor(pros::Distance* sensor,
 }
 
 constexpr double LEFT_SENSOR_OFFSET  = 2.88;
-constexpr double RIGHT_SENSOR_OFFSET = 0.0;
-constexpr double FRONT_SENSOR_OFFSET = 0.0;
+constexpr double RIGHT_SENSOR_OFFSET = 3;
+constexpr double FRONT_SENSOR_OFFSET = 5.6;
 
 void lemlib::Chassis::resetPositionLeft() {
     resetPositionWithSensor(sensors.distanceLeft, LEFT_SENSOR_OFFSET, -90.0);
@@ -286,5 +286,20 @@ void lemlib::Chassis::resetPositionRight() {
 }
 
 void lemlib::Chassis::resetPositionFront() {
-    resetPositionWithSensor(sensors.distanceFront, FRONT_SENSOR_OFFSET, 5.2);
+    if (sensors.distanceFront == nullptr) return;
+    
+    int rawMm = sensors.distanceFront->get_distance();
+    if (rawMm <= 30 || rawMm > 2000) return;
+    
+    double sensorReading = rawMm / 25.4;
+    double calculatedY = sensorReading + FRONT_SENSOR_OFFSET;
+    
+    Pose pose = this->getPose();
+    //if (fabs(calculatedY - pose.y) > 12.0) return; // sanity check
+    
+    this->setPose(pose.x, calculatedY, pose.theta);
+}
+
+double lemlib::Chassis::getFrontDistance() {
+    return sensors.distanceFront->get_distance(); // Read front sensor to determine distance to front wall
 }

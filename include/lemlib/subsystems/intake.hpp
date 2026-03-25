@@ -28,19 +28,15 @@ class Intake {
 
         void moveTopIntake(double velocity);
 
-        void intakeBlock();
+        void hoard();
 
         void outtake();
-        
+
         void middleGoal();
 
         void longGoal();
 
         void stopIntake();
-    
-        void intakeControl();
-
-        void intakeOut();
 
         void intakeOutAuton();
 
@@ -50,12 +46,10 @@ class Intake {
 
         void intakeOutAutonSlow();
 
-        double intakeTemperature();
-
         //intake jam functions
 
         void intakeJam(bool async);
-        
+
         // Jam tracking functions (for extending intake time in auton)
         void startJamTracking(); // Start tracking jams for current section
         void stopJamTracking();  // Stop tracking jams
@@ -65,8 +59,6 @@ class Intake {
 
         //color sort functions
 
-        void spitOut();
-        
         bool colorDetected(bool red);
 
         void redColorSort();
@@ -86,13 +78,13 @@ class Intake {
         //intake variables
 
         bool colorSortActive = true;
-        
+
         bool intakePneumaticActive = true;
 
         bool driverControl = false;
 
         double desiredBottomVelocity = 0;
-        
+
         // Jam tracking variables
         int jamCount = 0;
         bool jamTrackingActive = false;

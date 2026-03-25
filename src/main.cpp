@@ -60,7 +60,7 @@ lemlib::ControllerSettings linearController(4, // (kP) 4.067
 );
 
 // angular motion controller
-lemlib::ControllerSettings angularController(1.85, // (kP) 1.85
+lemlib::ControllerSettings angularController(1.61, // (kP) 1.78
                                              0, // (kI)
                                             11, // (kD)11 10.5
                                              0, // anti windup
@@ -218,6 +218,9 @@ void autonomous() {
             pros::screen::print(pros::E_TEXT_MEDIUM, 0, "x: %.2f",pose.x);
             pros::screen::print(pros::E_TEXT_MEDIUM, 1, "y: %.2f", pose.y);
             pros::screen::print(pros::E_TEXT_MEDIUM, 2, "theta: %.2f", pose.theta);
+            if (pose.theta > 136) {
+                pros::screen::print(pros::E_TEXT_MEDIUM, 3, "Theta exceeded 91!");
+            }
             pros::delay(20); // Update every 20ms
         }
     });
@@ -267,11 +270,11 @@ void opcontrol() {
             bool curR2 = controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2);
             bool active = curL1 || curR2;
 
-            if (active) {
+            if (active && holdSourceL1) {
                 if (holdState == IH_Off) {
                     holdState = IH_PreReverse;
                     holdStart = pros::millis();
-                    intake.moveBottomIntake(-200);
+                    intake.moveBottomIntake(-300);
                     holdSourceL1 = curL1;
                 }
                 if (holdState == IH_PreReverse) {
@@ -280,12 +283,27 @@ void opcontrol() {
                     }
                 }
                 if (holdState == IH_Intake) {
-                    if (holdSourceL1) {
                         intake.intakePneumaticV(1);
                         intake.longGoal();
-                    } else {
-                        intake.middleGoal();
+                }
+            }
+
+            if (active && !holdSourceL1) {
+                if (holdState == IH_Off) {
+                    holdState = IH_PreReverse;
+                    holdStart = pros::millis();
+                    intake.moveBottomIntake(-300);
+                    intake.moveMiddleIntake(-300);
+                    intake.moveTopIntake(-300);
+                    holdSourceL1 = curL1;
+                }
+                if (holdState == IH_PreReverse) {
+                    if (pros::millis() - holdStart >= 100) {
+                        holdState = IH_Intake;
                     }
+                }
+                if (holdState == IH_Intake) {
+                        intake.middleGoal();
                 }
             }
 
@@ -295,7 +313,7 @@ void opcontrol() {
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1))
         {
             intake.intakePneumaticV(0);
-            intake.intakeBlock();
+            intake.hoard();
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y))
         {
@@ -330,8 +348,6 @@ void opcontrol() {
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
             wing.wingChange();
         }
-        if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)) {intakeLift.intakeLiftV(1);}
-        if(controller.get_digital_new_release(pros::E_CONTROLLER_DIGITAL_L2)) {intakeLift.intakeLiftV(0);}
         pros::delay(10);
 
     }

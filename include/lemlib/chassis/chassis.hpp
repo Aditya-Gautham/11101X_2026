@@ -936,6 +936,7 @@ class Chassis {
         void resetPositionLeft();
         void resetPositionRight();
         void resetPositionFront();
+        double getFrontDistance();
         
         // The master logic function used by the wrappers above
         void resetPositionWithSensor(pros::Distance* sensor, double sensor_offset, double sensor_angle_offset);
