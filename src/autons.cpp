@@ -44,7 +44,7 @@ void leftFourLongFourMiddle() {
     chassis.waitUntil(25.25);
     //pros::delay(900);
     intake.intakePneumaticV(1);
-    intake.scoreHighGoal();
+    intake.longGoal();
     pros::delay(1200);
     matchload.matchloadV(0);
     intake.stopIntake();
@@ -192,7 +192,7 @@ void leftFourLongFourMiddleWing() {
     chassis.moveToPoint(-49.4, 19.75, 2000, {.forwards = false, .minSpeed = 40, .clampDistance = false});
     chassis.waitUntil(24);
     matchload.matchloadV(0);
-    intake.scoreHighGoal();
+    intake.longGoal();
     pros::delay(1100);
     intake.stopIntake();
     chassis.moveToPoint(-49.4, 12, 1500, {.minSpeed = 20});
@@ -210,7 +210,7 @@ void leftFourLongFourMiddleWing() {
     chassis.turnToPoint(-12, 37.1, 1500, {.forwards = false, .pidSelector = 3});
     matchload.matchloadV(1);
     chassis.moveToPoint(-12, 37.1, 2000, {.forwards = false, .minSpeed = 25, .clampDistance = false});
-    intake.outtakeBlock();
+    intake.outtake();
     pros::delay(100);
     intake.stopIntake();
     //chassis.moveToPose(-11.35, 35.6, 225, 2000);
@@ -290,7 +290,7 @@ void leftFourLong() {
     chassis.waitUntil(6.5);
     intake.intakePneumaticV(1);
     //wing.wingV(1);
-    intake.scoreHighGoal();
+    intake.longGoal();
     pros::delay(1000);
     matchload.matchloadV(0);
     intake.stopIntake();
@@ -351,7 +351,7 @@ void leftSevenLong() {
     pros::delay(100);
     intake.intakePneumaticV(1);
     //wing.wingV(1);
-    intake.scoreHighGoal();
+    intake.longGoal();
     pros::delay(1400);
     matchload.matchloadV(0);
     intake.stopIntake();
@@ -460,7 +460,7 @@ void rightFourLongThreeLow() {
     chassis.waitUntil(25.25);
     //pros::delay(900);
     intake.intakePneumaticV(1);
-    intake.scoreHighGoal();
+    intake.longGoal();
     pros::delay(900);
     intake.stopIntake();
     matchload.matchloadV(0);
@@ -477,7 +477,7 @@ void rightFourLongThreeLow() {
     pros::delay(550);
     matchload.matchloadV(1);
     intakeLift.intakeLiftV(1);
-    intake.outtakeBlockAuton();
+    intake.outtakeAuton();
     pros::delay(1100);
     chassis.moveToPoint(32.5, 10, 1500, {.forwards = false, .minSpeed = 40, .earlyExitRange = 3});
     intakeLift.intakeLiftV(0);
@@ -548,7 +548,7 @@ void rightFourLong() {
     chassis.waitUntil(4.5);
     intake.intakePneumaticV(1);
     //wing.wingV(1);
-    intake.scoreHighGoal();
+    intake.longGoal();
     pros::delay(1000);
     matchload.matchloadV(0);
     intake.stopIntake();
@@ -626,7 +626,7 @@ void rightSevenLong() {
     pros::delay(100);
     intake.intakePneumaticV(1);
     //wing.wingV(1);
-    intake.scoreHighGoal();
+    intake.longGoal();
     pros::delay(1400);
     matchload.matchloadV(0);
     intake.stopIntake();
@@ -770,11 +770,11 @@ void rightNineLong() {
     chassis.turnToPoint(47.5, 21.5, 1500, {.forwards = false, .minSpeed = 10, .earlyExitRange = 1});
     chassis.moveToPoint(47.5, 21.5, 2000, {.forwards = false, .minSpeed = 25});
     matchload.matchloadV(1);
-    intake.outtakeBlock();
+    intake.outtake();
     pros::delay(150);
     intake.stopIntake();
     pros::delay(350);
-    intake.scoreHighGoal();
+    intake.longGoal();
     pros::delay(1300);
     chassis.moveToPoint(47, 0, 2000, {.minSpeed = 10});
     intake.intakeBlock();
@@ -785,7 +785,7 @@ void rightNineLong() {
     chassis.moveToPoint(47.2, 19.5, 2000, {.forwards = false, .minSpeed = 25});
     chassis.waitUntil(24);
     matchload.matchloadV(0);
-    intake.scoreHighGoal();
+    intake.longGoal();
     //score long goal
 }
 
@@ -802,7 +802,7 @@ void rightThreeGoal() {
     chassis.waitUntil(25.25);
     //pros::delay(900);
     intake.intakePneumaticV(1);
-    intake.scoreHighGoal();
+    intake.longGoal();
     pros::delay(900);
     intake.stopIntake();
     matchload.matchloadV(0);
@@ -819,7 +819,7 @@ void rightThreeGoal() {
     pros::delay(550);
     matchload.matchloadV(1);
     intakeLift.intakeLiftV(1);
-    intake.outtakeBlockAuton();
+    intake.outtakeAuton();
     pros::delay(1100);
     chassis.moveToPoint(23.5, 24.1, 1500, {.forwards = false, .minSpeed = 20, .earlyExitRange = 1});
     intakeLift.intakeLiftV(0);
@@ -866,7 +866,7 @@ void soloWinPoint() {
         //pros::delay(900);
         intake.intakePneumaticV(1);
         matchload.matchloadV(0);
-        intake.scoreHighGoal();
+        intake.longGoal();
         pros::delay(1100);
         chassis.resetPositionLeft();
         intake.stopIntake();
@@ -997,7 +997,7 @@ void skills() {
         //pros::delay(900);
         intake.intakePneumaticV(1);
         matchload.matchloadV(0);
-        intake.scoreHighGoal();
+        intake.longGoal();
         pros::delay(4000);
         intake.stopIntake();
         chassis.turnToPoint(23.5, 24, 2000, {.minSpeed = 15, .earlyExitRange = 3});
@@ -1060,7 +1060,7 @@ void skills() {
         chassis.moveToPoint(-46.9, 21.5, 2000, {.forwards = false, .minSpeed = 20, .clampDistance = false});
         chassis.waitUntil(24);
         intake.intakePneumaticV(1);
-        intake.scoreHighGoal();
+        intake.longGoal();
         pros::delay(4000);
         chassis.moveToPoint(-46.9, 2, 2000, {.minSpeed = 5});
         matchload.matchloadV(0);

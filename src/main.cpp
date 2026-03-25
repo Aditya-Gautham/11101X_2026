@@ -254,11 +254,10 @@ void opcontrol() {
         int vert = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
         int horz = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
         if (abs(vert) < 7) vert = 0;
-       // if (fabs(horz) < 7) horz = 0;
         chassis.arcade(vert, horz);
 
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-            intake.outtakeBlock();
+            intake.outtake();
         }
         // handle holds on either L1 or R2 with non-blocking timer
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) ||
@@ -283,9 +282,9 @@ void opcontrol() {
                 if (holdState == IH_Intake) {
                     if (holdSourceL1) {
                         intake.intakePneumaticV(1);
-                        intake.scoreHighGoal();
+                        intake.longGoal();
                     } else {
-                        intake.scoreMiddleGoal();
+                        intake.middleGoal();
                     }
                 }
             }

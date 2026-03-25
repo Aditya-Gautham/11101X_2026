@@ -42,25 +42,25 @@ void Intake::intakeBlock() {
     moveTopIntake(600);
 }
 
-void Intake::outtakeBlock() {
+void Intake::outtake() {
     moveBottomIntake(-600);
     moveMiddleIntake(-600);
     moveTopIntake(-600);
 }
 
-void Intake::outtakeBlockAuton() {
+void Intake::outtakeAuton() {
     moveBottomIntake(-25);
     moveMiddleIntake(-25);
     moveTopIntake(-200);
 }
 
-void Intake::scoreMiddleGoal() {
+void Intake::middleGoal() {
     moveBottomIntake(200);
     moveMiddleIntake(200);
     moveTopIntake(-200);
 }
 
-void Intake::scoreHighGoal() {
+void Intake::longGoal() {
     moveBottomIntake(600);
     moveMiddleIntake(600);
     moveTopIntake(600);
@@ -76,12 +76,6 @@ void Intake::spitOut() {
     moveBottomIntake(600);
     moveMiddleIntake(600);
     moveTopIntake(-600);
-}
-
-void Intake::scoreMiddleHigh() {
-    moveBottomIntake(0);
-    moveMiddleIntake(0);
-    moveTopIntake(100);
 }
 
 void Intake::intakeOut() {

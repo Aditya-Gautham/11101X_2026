@@ -30,15 +30,13 @@ class Intake {
 
         void intakeBlock();
 
-        void outtakeBlock();
+        void outtake();
         
-        void scoreMiddleGoal();
+        void middleGoal();
 
-        void scoreHighGoal();
+        void longGoal();
 
         void stopIntake();
-
-        void scoreMiddleHigh();
     
         void intakeControl();
 
@@ -46,7 +44,7 @@ class Intake {
 
         void intakeOutAuton();
 
-        void outtakeBlockAuton();
+        void outtakeAuton();
 
         void intakeOutSkills();
 
