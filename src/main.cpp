@@ -48,19 +48,19 @@ lemlib::Drivetrain drivetrain(&leftMotors,
 );
 
 // lateral motion controller
-lemlib::ControllerSettings linearController(4, // (kP) 4.067
+lemlib::ControllerSettings linearController(3.94, // (kP) 4.067
                                             0, // (kI)
                                             4, // (kD)
                                             0, //
                                             1, // small error range, in inches
                                             100, // small error range timeout, in milliseconds
-                                            3, // large error range, in inches
+                                            3, // large error range, in inches`
                                             300, // large error range timeout, in milliseconds
                                             15 // maximum acceleration (slew)
 );
 
 // angular motion controller
-lemlib::ControllerSettings angularController(1.61, // (kP) 1.78
+lemlib::ControllerSettings angularController(1.82, // (kP) 1.82
                                              0, // (kI)
                                             11, // (kD)11 10.5
                                              0, // anti windup
@@ -97,7 +97,31 @@ lemlib::ControllerSettings linearControllerCurve(4, // (kP) 4.067
 );
 
 // extra angular motion controller
-lemlib::ControllerSettings angularControllerShort(2.06 , // (kP)1.7 1.6
+lemlib::ControllerSettings angularControllerShort(2.07, // (kP)1.7 1.6
+                                                  0, // (kI)
+                                                  11, // (kD)11 10.5
+                                                  0, // anti windup
+                                                  2, // small error range, in degrees
+                                                  200, // small error range timeout, in milliseconds
+                                                  4, // large error range, in degrees
+                                                  250, // large error range timeout, in milliseconds
+                                                  20 // maximum acceleration (slew)
+);
+
+// extra angular motion controller
+lemlib::ControllerSettings angularController135(1.68, // (kP)1.7 1.6
+                                                  0, // (kI)
+                                                  11, // (kD)11 10.5
+                                                  0, // anti windup
+                                                  2, // small error range, in degrees
+                                                  200, // small error range timeout, in milliseconds
+                                                  4, // large error range, in degrees
+                                                  250, // large error range timeout, in milliseconds
+                                                  20 // maximum acceleration (slew)
+);
+
+// extra angular motion controller
+lemlib::ControllerSettings angularController180(1.59, // (kP)1.7 1.6
                                                   0, // (kI)
                                                   11, // (kD)11 10.5
                                                   0, // anti windup
@@ -118,30 +142,6 @@ lemlib::ControllerSettings headingControllerCurve(3, // (kP) 2 1
                                                   2, // large error range, in degrees
                                                   500, // large error range timeout, in milliseconds
                                                   0 // maximum acceleration (slew)
-);
-
-// extra angular motion controller
-lemlib::ControllerSettings angularController135(1.69, // (kP)1.7 1.6
-                                                  0, // (kI)
-                                                  11, // (kD)11 10.5
-                                                  0, // anti windup
-                                                  2, // small error range, in degrees
-                                                  200, // small error range timeout, in milliseconds
-                                                  4, // large error range, in degrees
-                                                  250, // large error range timeout, in milliseconds
-                                                  20 // maximum acceleration (slew)
-);
-
-// extra angular motion controller
-lemlib::ControllerSettings angularController180(1.6, // (kP)1.7 1.6
-                                                  0, // (kI)
-                                                  11, // (kD)11 10.5
-                                                  0, // anti windup
-                                                  2, // small error range, in degrees
-                                                  200, // small error range timeout, in milliseconds
-                                                  4, // large error range, in degrees
-                                                  250, // large error range timeout, in milliseconds
-                                                  20 // maximum acceleration (slew)
 );
 
 // sensors for odometry
@@ -227,7 +227,7 @@ void autonomous() {
 
     if (runAuton)
     {
-    odomTest();
+    //odomTest();
     //leftFourLongFourMiddle();
     //leftFourLongFourMiddleWing();
     //leftFourLong();
@@ -237,7 +237,7 @@ void autonomous() {
     //rightSevenLong();
     //rightFourLong();
     //rightNineLong();
-    //rightThreeGoal();
+    rightThreeGoal();
     //soloWinPoint();
     //skills();
     }
