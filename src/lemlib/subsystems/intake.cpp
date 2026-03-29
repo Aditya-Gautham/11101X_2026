@@ -83,7 +83,7 @@ void Intake::intakeOutAuton() {
 }
 
 void Intake::intakeOutAutonSlow() {
-    moveBottomIntake(300);
+    moveBottomIntake(200);
     moveMiddleIntake(150);
     //moveTopIntake(250);
     //moveTopIntake(400);

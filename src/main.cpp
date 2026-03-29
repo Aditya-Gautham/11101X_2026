@@ -232,7 +232,6 @@ void autonomous() {
     //leftFourLongFourMiddleWing();
     //leftFourLong();
     //leftSevenLong();
-    //leftThreeGoal();
     //rightFourLongThreeLow();
     //rightSevenLong();
     //rightFourLong();
