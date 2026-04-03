@@ -233,10 +233,10 @@ void autonomous() {
     //leftFourLong();
     //leftSevenLong();
     //rightFourLongThreeLow();
-    //rightSevenLong();
+    rightSevenLong();
     //rightFourLong();
     //rightNineLong();
-    rightThreeGoal();
+    //rightThreeGoal();
     //soloWinPoint();
     //skills();
     }
@@ -291,9 +291,9 @@ void opcontrol() {
                 if (holdState == IH_Off) {
                     holdState = IH_PreReverse;
                     holdStart = pros::millis();
-                    intake.moveBottomIntake(-300);
-                    intake.moveMiddleIntake(-300);
-                    intake.moveTopIntake(-300);
+                    intake.moveBottomIntake(-600);
+                    intake.moveMiddleIntake(-600);
+                    intake.moveTopIntake(-600);
                     holdSourceL1 = curL1;
                 }
                 if (holdState == IH_PreReverse) {

@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "nitatoobad",
+    "project_name": "rightSeven",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -592,9 +592,9 @@
       }
     },
     "upload_options": {
-      "description": "nitatoobad",
+      "description": "rightSeven",
       "icon": "pros",
-      "slot": 4
+      "slot": 2
     },
     "use_early_access": false
   }
