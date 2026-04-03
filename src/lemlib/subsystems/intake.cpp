@@ -49,8 +49,8 @@ void Intake::outtake() {
 }
 
 void Intake::outtakeAuton() {
-    moveBottomIntake(-10);
-    moveMiddleIntake(-25);
+    moveBottomIntake(-50);
+    moveMiddleIntake(-75);
     moveTopIntake(-200);
 }
 

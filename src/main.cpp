@@ -232,11 +232,13 @@ void autonomous() {
     //leftFourLongFourMiddleWing();
     //leftFourLong();
     //leftSevenLong();
+    //leftSixLongThreeMiddle();
     //rightFourLongThreeLow();
-    rightSevenLong();
+    //rightSevenLong();
     //rightFourLong();
     //rightNineLong();
-    //rightThreeGoal();
+    //rightSixLongThreeMiddle();
+    rightThreeGoal();
     //soloWinPoint();
     //skills();
     }

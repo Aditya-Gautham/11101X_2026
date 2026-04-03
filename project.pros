@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "rightSeven",
+    "project_name": "righ",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -592,7 +592,7 @@
       }
     },
     "upload_options": {
-      "description": "rightSeven",
+      "description": "rightSix",
       "icon": "pros",
       "slot": 2
     },
