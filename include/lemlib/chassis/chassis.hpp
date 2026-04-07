@@ -936,6 +936,8 @@ class Chassis {
         void resetPositionLeft();
         void resetPositionRight();
         void resetPositionFront();
+        void setDrive(double left, double right);
+        void wiggle(double times);
         double getFrontDistance();
         
         // The master logic function used by the wrappers above

@@ -285,9 +285,9 @@ void lemlib::Chassis::resetPositionRight() {
     resetPositionWithSensor(sensors.distanceRight, RIGHT_SENSOR_OFFSET, 90.0);
 }
 
-void lemlib::Chassis::resetPositionFront() {
+/*void lemlib::Chassis::resetPositionFront() {
     if (sensors.distanceFront == nullptr) return;
-    
+
     int rawMm = sensors.distanceFront->get_distance();
     if (rawMm <= 30 || rawMm > 2000) return;
     
@@ -299,7 +299,49 @@ void lemlib::Chassis::resetPositionFront() {
     
     this->setPose(pose.x, calculatedY, pose.theta);
 }
+*/
+void lemlib::Chassis::resetPositionFront() {
+    if (sensors.distanceFront == nullptr) return;
+
+    int rawMm = sensors.distanceFront->get_distance();
+    if (rawMm <= 30 || rawMm > 2000) return;
+
+    double sensorReading = rawMm / 25.4;
+
+    Pose pose = this->getPose();
+    double headingRad = pose.theta * (M_PI / 180.0);
+    double normalizedAngle = fmod(headingRad, 2 * M_PI);
+    if (normalizedAngle < 0) normalizedAngle += 2 * M_PI;
+
+    // ANGLE GUARD (±8° from 180°)
+    double targetAngleRad = M_PI;
+    double angleDiff = fabs(normalizedAngle - targetAngleRad);
+    if (angleDiff > M_PI) angleDiff = 2 * M_PI - angleDiff;
+    if (angleDiff > (8.0 * M_PI / 180.0)) return;
+
+    // No cosine correction — sensor already reads perpendicular distance
+    double correctedDist = sensorReading + FRONT_SENSOR_OFFSET;
+
+    //if (fabs(correctedDist - pose.y) > 12.0) return; // optional sanity check
+    this->setPose(pose.x, correctedDist, pose.theta);
+}
 
 double lemlib::Chassis::getFrontDistance() {
     return sensors.distanceFront->get_distance(); // Read front sensor to determine distance to front wall
+}
+
+//skills functions
+void lemlib::Chassis::setDrive(double left, double right) {
+  drivetrain.leftMotors->move_voltage(left);
+  drivetrain.rightMotors->move_voltage(right);
+}
+
+void lemlib::Chassis::wiggle(double times) {
+  int i = 0;
+  while (times >= i) {
+    setDrive(127, -127);
+    pros::delay(200);
+    setDrive(-127, 127);
+    pros::delay(200);
+  }
 }

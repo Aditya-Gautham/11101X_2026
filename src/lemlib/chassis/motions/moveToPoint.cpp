@@ -102,7 +102,7 @@ void lemlib::Chassis::moveToPoint(float x, float y, int timeout, MoveToPointPara
         float headingOut = localHeadingPID.update(radToDeg(headingError));
         
         // stop angular correction when very close to target to prevent jitter
-        if (distTarget < 6.0) {
+        if (distTarget < 6.5) {
             headingOut = 0;
         }
         // apply drive clamping only if we are stopping or have passed the early exit point

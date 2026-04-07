@@ -49,9 +49,9 @@ void Intake::outtake() {
 }
 
 void Intake::outtakeAuton() {
-    moveBottomIntake(-50);
-    moveMiddleIntake(-75);
-    moveTopIntake(-200);
+    moveBottomIntake(-20);
+    moveMiddleIntake(-40);
+    moveTopIntake(0);
 }
 
 void Intake::middleGoal() {
@@ -74,12 +74,12 @@ void Intake::stopIntake() {
 
 void Intake::intakeOutAuton() {
     moveBottomIntake(200);
-    moveMiddleIntake(150);
+    moveMiddleIntake(200);
     //moveTopIntake(250);
     //moveTopIntake(400);
     //moveTopIntake(300);
     //just for skills
-    moveTopIntake(-75);
+    moveTopIntake(-125);
 }
 
 void Intake::intakeOutAutonSlow() {
