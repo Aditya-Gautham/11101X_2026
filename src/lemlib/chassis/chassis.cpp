@@ -203,6 +203,7 @@ void lemlib::Chassis::setBrakeMode(pros::motor_brake_mode_e mode) {
 
 // Distance sensor reset logic
 const float field_half_size = 70.25;
+constexpr double FIELD_HALF = 70.25; // same constant, different meaning of origin
 
 void lemlib::Chassis::resetPositionWithSensor(pros::Distance* sensor, 
     double sensor_offset, double sensor_angle_offset) {
@@ -285,21 +286,6 @@ void lemlib::Chassis::resetPositionRight() {
     resetPositionWithSensor(sensors.distanceRight, RIGHT_SENSOR_OFFSET, 90.0);
 }
 
-/*void lemlib::Chassis::resetPositionFront() {
-    if (sensors.distanceFront == nullptr) return;
-
-    int rawMm = sensors.distanceFront->get_distance();
-    if (rawMm <= 30 || rawMm > 2000) return;
-    
-    double sensorReading = rawMm / 25.4;
-    double calculatedY = sensorReading + FRONT_SENSOR_OFFSET;
-    
-    Pose pose = this->getPose();
-    //if (fabs(calculatedY - pose.y) > 12.0) return; // sanity check
-    
-    this->setPose(pose.x, calculatedY, pose.theta);
-}
-*/
 void lemlib::Chassis::resetPositionFront() {
     if (sensors.distanceFront == nullptr) return;
 
@@ -344,4 +330,199 @@ void lemlib::Chassis::wiggle(double times) {
     setDrive(-127, 127);
     pros::delay(200);
   }
+}
+
+void lemlib::Chassis::resetPositionWithSensorAlways(pros::Distance* sensor, 
+    double sensor_offset, double sensor_angle_offset) {
+    if (sensor == nullptr) return;
+    
+    int rawMm = sensor->get_distance();
+    double sensorReading = rawMm / 25.4;
+
+    Pose pose = this->getPose(); 
+    double headingRad = pose.theta * (M_PI / 180.0);
+    double sensorAngleRad = sensor_angle_offset * (M_PI / 180.0);
+    double totalAngleRad = headingRad + sensorAngleRad;
+
+    double normalizedAngle = fmod(totalAngleRad, 2 * M_PI);
+    if (normalizedAngle < 0) normalizedAngle += 2 * M_PI;
+
+    bool resettingX = false;
+    double wallCoordinate = 0;
+    double targetWallAngleRad = 0;
+
+    if (normalizedAngle > M_PI_4 && normalizedAngle <= 3 * M_PI_4) {
+        targetWallAngleRad = M_PI_2;
+        resettingX = true;
+        wallCoordinate = FIELD_HALF;        // was field_half_size
+    } else if (normalizedAngle > 3 * M_PI_4 && normalizedAngle <= 5 * M_PI_4) {
+        targetWallAngleRad = M_PI;
+        resettingX = false;
+        wallCoordinate = -FIELD_HALF;       // was -field_half_size
+    } else if (normalizedAngle > 5 * M_PI_4 && normalizedAngle <= 7 * M_PI_4) {
+        targetWallAngleRad = 3 * M_PI_2;
+        resettingX = true;
+        wallCoordinate = -FIELD_HALF;       // was -field_half_size
+    } else {
+        targetWallAngleRad = 0;
+        resettingX = false;
+        wallCoordinate = FIELD_HALF;        // was field_half_size
+    }
+
+    double angleDiff = fabs(normalizedAngle - targetWallAngleRad);
+    double correctedDist = (sensorReading * cos(angleDiff)) + sensor_offset;
+    if (angleDiff > M_PI) angleDiff = 2 * M_PI - angleDiff;
+    
+    double calculatedPos = wallCoordinate - (correctedDist * (wallCoordinate > 0 ? 1 : -1));
+
+    if (resettingX) {
+        this->setPose(calculatedPos, pose.y, pose.theta);
+    } else {
+        this->setPose(pose.x, calculatedPos, pose.theta);
+    }
+}
+
+void lemlib::Chassis::resetPositionFrontAlways() {
+    if (sensors.distanceFront == nullptr) return;
+
+    int rawMm = sensors.distanceFront->get_distance();
+    double sensorReading = rawMm / 25.4;
+
+    Pose pose = this->getPose();
+    double headingRad = pose.theta * (M_PI / 180.0);
+    double normalizedAngle = fmod(headingRad, 2 * M_PI);
+    if (normalizedAngle < 0) normalizedAngle += 2 * M_PI;
+
+    double targetAngleRad = M_PI;
+    double angleDiff = fabs(normalizedAngle - targetAngleRad);
+    if (angleDiff > M_PI) angleDiff = 2 * M_PI - angleDiff;
+
+    double correctedDist = sensorReading + FRONT_SENSOR_OFFSET;
+
+    // Skills: south wall at Y = -FIELD_HALF
+    double calculatedY = -FIELD_HALF + correctedDist;  // was just correctedDist
+
+    this->setPose(pose.x, calculatedY, pose.theta);
+}
+
+void lemlib::Chassis::resetPositionLeftAlways() {
+    resetPositionWithSensorAlways(sensors.distanceLeft, LEFT_SENSOR_OFFSET, -90.0);
+}
+
+void lemlib::Chassis::resetPositionRightAlways() {
+    resetPositionWithSensorAlways(sensors.distanceRight, RIGHT_SENSOR_OFFSET, 90.0);
+}
+
+// ============================================================
+// SKILLS: Origin = center of field. All walls at ±70.25".
+// ============================================================
+
+
+
+void lemlib::Chassis::resetPositionWithSensorSkills(pros::Distance* sensor,
+    double sensor_offset, double sensor_angle_offset) {
+    if (sensor == nullptr) return;
+
+    // 1. SAFE READ FILTERING
+    int rawMm = sensor->get_distance();
+    if (rawMm <= 30 || rawMm > 2000) return;
+
+    double sensorReading = rawMm / 25.4;
+
+    // 2. Get current pose and normalize heading
+    Pose pose = this->getPose();
+    double headingRad = pose.theta * (M_PI / 180.0);
+    double sensorAngleRad = sensor_angle_offset * (M_PI / 180.0);
+    double totalAngleRad = headingRad + sensorAngleRad;
+
+    double normalizedAngle = fmod(totalAngleRad, 2 * M_PI);
+    if (normalizedAngle < 0) normalizedAngle += 2 * M_PI;
+
+    // 3. Determine target wall
+    // Skills: origin is field center, so all 4 walls are at ±FIELD_HALF
+    // The wall coordinate signs are IDENTICAL to the general resetPositionWithSensor —
+    // the difference is that in match auton the front/back walls were at 0 and +70.25.
+    // Here they're at -70.25 and +70.25, which is what the generic logic already does.
+    bool resettingX = false;
+    double wallCoordinate = 0;
+    double targetWallAngleRad = 0;
+
+    if (normalizedAngle > M_PI_4 && normalizedAngle <= 3 * M_PI_4) {
+        targetWallAngleRad = M_PI_2;      // East wall  → X = +FIELD_HALF
+        resettingX = true;
+        wallCoordinate = FIELD_HALF;
+    } else if (normalizedAngle > 3 * M_PI_4 && normalizedAngle <= 5 * M_PI_4) {
+        targetWallAngleRad = M_PI;        // South wall → Y = -FIELD_HALF
+        resettingX = false;
+        wallCoordinate = -FIELD_HALF;
+    } else if (normalizedAngle > 5 * M_PI_4 && normalizedAngle <= 7 * M_PI_4) {
+        targetWallAngleRad = 3 * M_PI_2; // West wall  → X = -FIELD_HALF
+        resettingX = true;
+        wallCoordinate = -FIELD_HALF;
+    } else {
+        targetWallAngleRad = 0;          // North wall → Y = +FIELD_HALF
+        resettingX = false;
+        wallCoordinate = FIELD_HALF;
+    }
+
+    // 4. 8-DEGREE GUARD
+    double angleDiff = fabs(normalizedAngle - targetWallAngleRad);
+    if (angleDiff > M_PI) angleDiff = 2 * M_PI - angleDiff;
+    if (angleDiff > (8.0 * M_PI / 180.0)) return;
+
+    // 5. COSINE CORRECTION
+    double correctedDist = (sensorReading * cos(angleDiff)) + sensor_offset;
+
+    // 6. POSITION CALCULATION
+    // wallCoordinate > 0  → robot is inside the wall, so pos = wall - dist
+    // wallCoordinate < 0  → robot is inside the wall, so pos = wall + dist
+    double calculatedPos = wallCoordinate - (correctedDist * (wallCoordinate > 0 ? 1 : -1));
+
+    // Optional sanity check — uncomment if you want jump protection
+    // double currentPos = resettingX ? pose.x : pose.y;
+    // if (fabs(calculatedPos - currentPos) > 12.0) return;
+
+    // 7. AXIS-ISOLATED POSE UPDATE
+    if (resettingX) {
+        this->setPose(calculatedPos, pose.y, pose.theta);
+    } else {
+        this->setPose(pose.x, calculatedPos, pose.theta);
+    }
+}
+
+void lemlib::Chassis::resetPositionFrontSkills() {
+    if (sensors.distanceFront == nullptr) return;
+
+    int rawMm = sensors.distanceFront->get_distance();
+    if (rawMm <= 30 || rawMm > 2000) return;
+
+    double sensorReading = rawMm / 25.4;
+
+    Pose pose = this->getPose();
+    double headingRad = pose.theta * (M_PI / 180.0);
+    double normalizedAngle = fmod(headingRad, 2 * M_PI);
+    if (normalizedAngle < 0) normalizedAngle += 2 * M_PI;
+
+    // Front sensor points backward (south), so target angle is π (180°)
+    double targetAngleRad = M_PI;
+    double angleDiff = fabs(normalizedAngle - targetAngleRad);
+    if (angleDiff > M_PI) angleDiff = 2 * M_PI - angleDiff;
+    if (angleDiff > (8.0 * M_PI / 180.0)) return;
+
+    double correctedDist = sensorReading + FRONT_SENSOR_OFFSET;
+
+    // Skills: south wall is at Y = -FIELD_HALF
+    // Robot Y = southWall + correctedDist  →  Y = -FIELD_HALF + correctedDist
+    double calculatedY = -FIELD_HALF + correctedDist;
+
+    this->setPose(pose.x, calculatedY, pose.theta);
+}
+
+// Convenience wrappers
+void lemlib::Chassis::resetPositionLeftSkills() {
+    resetPositionWithSensorSkills(sensors.distanceLeft, LEFT_SENSOR_OFFSET, -90.0);
+}
+
+void lemlib::Chassis::resetPositionRightSkills() {
+    resetPositionWithSensorSkills(sensors.distanceRight, RIGHT_SENSOR_OFFSET, 90.0);
 }

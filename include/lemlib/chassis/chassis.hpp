@@ -939,6 +939,14 @@ class Chassis {
         void setDrive(double left, double right);
         void wiggle(double times);
         double getFrontDistance();
+        void resetPositionLeftAlways();
+        void resetPositionRightAlways();
+        void resetPositionFrontAlways();
+        void resetPositionWithSensorAlways(pros::Distance* sensor, double sensor_offset, double sensor_angle_offset);
+        void resetPositionWithSensorSkills(pros::Distance* sensor, double sensor_offset, double sensor_angle_offset);
+        void resetPositionLeftSkills();
+        void resetPositionRightSkills();
+        void resetPositionFrontSkills();
         
         // The master logic function used by the wrappers above
         void resetPositionWithSensor(pros::Distance* sensor, double sensor_offset, double sensor_angle_offset);
