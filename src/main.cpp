@@ -180,7 +180,12 @@ Descore descore(descorePneumatic);
 
 IntakeLift intakeLift(intakeLiftPneumatic);
 
+bool skillsFlag = true;
+
 void initialize() {
+    if(skillsFlag) {
+       intakeLift.intakeLiftV(0);
+    }
     pros::screen::set_eraser(pros::Color::black);
     pros::screen::set_pen(pros::Color::white);
     chassis.calibrate();

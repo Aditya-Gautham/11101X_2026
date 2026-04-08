@@ -508,15 +508,15 @@ void soloWinPoint() {
 }
 
 void skills() {
-    chassis.setPose(0, -60, 180);
     // park zone balls
     chassis.setPose(0, 0, 180);
     intake.hoard();
-    chassis.setDrive(127,127);
+    chassis.setDrive(12000,12000);
     pros::delay(600);
+    intakeLift.intakeLiftV(1);
     chassis.wiggle(3);
 
-    // moving back
+   /* // moving back
     chassis.setDrive(-60,-60);
     pros::delay(1000);
     chassis.turnToHeading(0, 500);
@@ -547,6 +547,6 @@ void skills() {
 
     chassis.moveToPoint(-52, -48, 2000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 2});
 
-    chassis.turnToPoint(-52, 24, 2000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 2});
+    chassis.turnToPoint(-52, 24, 2000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 2});*/
 
 }
