@@ -49,9 +49,9 @@ void Intake::outtake() {
 }
 
 void Intake::outtakeAuton() {
-    moveBottomIntake(-20);
-    moveMiddleIntake(-40);
-    moveTopIntake(0);
+    moveBottomIntake(-200);
+    moveMiddleIntake(-500);
+    moveTopIntake(-600);
 }
 
 void Intake::middleGoal() {
@@ -83,17 +83,21 @@ void Intake::intakeOutAuton() {
 }
 
 void Intake::intakeOutAutonSlow() {
-    moveBottomIntake(200);
-    moveMiddleIntake(150);
+   /* moveBottomIntake(-10);
+    moveMiddleIntake(-150);
     //moveTopIntake(250);
     //moveTopIntake(400);
     //moveTopIntake(300);
-    moveTopIntake(-50);
+    moveTopIntake(-50);*/
+    bottomIntakeMotor.move_voltage(-4000);
+    middleIntakeMotor.move_voltage(-7000);
+    topIntakeMotor.move_voltage(-12000);
 }
 
 void Intake::intakeOutSkills() {
-    moveBottomIntake(200);
-    moveMiddleIntake(200);
+    intake.intakePneumaticV(1);
+    moveBottomIntake(-10);
+    moveMiddleIntake(-10);
     moveTopIntake(-75);
 }
 

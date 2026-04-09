@@ -183,11 +183,12 @@ IntakeLift intakeLift(intakeLiftPneumatic);
 bool skillsFlag = true;
 
 void initialize() {
-    if(skillsFlag) {
-       intakeLift.intakeLiftV(0);
-    }
     pros::screen::set_eraser(pros::Color::black);
     pros::screen::set_pen(pros::Color::white);
+    if (skillsFlag){
+        intakeLift.intakeLiftV(1);
+        intakeLift.intakeLiftUp = true;
+    }
     chassis.calibrate();
     // red alliance - true, blue alliance - false
     intake.calibrate(true);
@@ -250,6 +251,7 @@ void autonomous() {
 }
 
 void opcontrol() {
+    intakeLift.intakeLiftV(0);
     intake.driverControl = true;
     intake.colorSortActive = false;
     // intake hold state machine for L1/R2
@@ -323,7 +325,7 @@ void opcontrol() {
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y))
         {
-            intake.intakeOutSkills();
+            intake.intakeOutAutonSlow();
         }
         else {
             intake.stopIntake();

@@ -508,27 +508,49 @@ void soloWinPoint() {
 }
 
 void skills() {
-    // park zone balls
-    chassis.setPose(0, 0, 180);
+  /*  chassis.setPose(0, -60, 180);
+    chassis.resetPositionFrontSkills();
+    chassis.resetPositionRightSkills();*/
+
+     // park zone balls
+    chassis.setPose(0, -60, 180);
     intake.hoard();
-    chassis.setDrive(12000,12000);
+    intakeLift.intakeLiftV(0);
+    chassis.setDrive(8000,8000);
+    pros::delay(300);
+    chassis.setDrive(0,0);
+    pros::delay(350);
+    chassis.setDrive(7000, 7000);
+    pros::delay(400);
+    chassis.setDrive(0,0);
     pros::delay(600);
-    intakeLift.intakeLiftV(1);
-    chassis.wiggle(3);
 
-   /* // moving back
-    chassis.setDrive(-60,-60);
+    //drive back and reset odometry
+    chassis.setDrive(-8000, -8000);
     pros::delay(1000);
-    chassis.turnToHeading(0, 500);
+    chassis.setDrive(0,0);
+    chassis.turnToHeading(180, 500);
+    pros::delay(500);
+    chassis.resetPositionFrontSkills();
+    chassis.resetPositionRightSkills();
+    pros::delay(200);
+
+
+    chassis.turnToPoint(18, -28, 2000, {.forwards = true, .minSpeed = 10, .earlyExitRange = 1, .shortTurn = true});
+    chassis.moveToPoint(18, -28, 2000, {.forwards = true, .minSpeed = 10, .earlyExitRange = 1});
     
-    //reset
-    chassis.resetPositionLeft();
-    chassis.resetPositionFront();
 
-    chassis.turnToPoint(-13, -13, 2000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 2, .shortTurn = true});
-    chassis.moveToPoint(-13, -13, 2000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 2});
+    chassis.turnToPoint(10, -9, 2000, {.forwards = true, .minSpeed = 10, .earlyExitRange = 1, .shortTurn = true});
+    chassis.moveToPoint(10, -9, 2000, {.forwards = true, .minSpeed = 10, .earlyExitRange = 1});
 
-    chassis.turnToPoint(-18, -18, 2000, {.forwards = true, .minSpeed = 10, .earlyExitRange = 2, .shortTurn = true});
+    chassis.turnToPoint(48, -48, 2000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 1, .shortTurn = true});
+    
+    intakeLift.intakeLiftV(1);
+    intake.intakeOutAutonSlow();
+    pros::delay(1200);   
+    
+
+   /* chassis.turnToPoint(-18, -18, 2000, {.forwards = true, .minSpeed = 10, .earlyExitRange = 2, .shortTurn = true});
     chassis.moveToPoint(-18, -18, 2000, {.forwards = true, .minSpeed = 10, .earlyExitRange = 2});
 
     matchload.matchloadV(1);
@@ -547,6 +569,8 @@ void skills() {
 
     chassis.moveToPoint(-52, -48, 2000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 2});
 
-    chassis.turnToPoint(-52, 24, 2000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 2});*/
+    chassis.turnToPoint(-52, 24, 2000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 2});
+
+    */
 
 }

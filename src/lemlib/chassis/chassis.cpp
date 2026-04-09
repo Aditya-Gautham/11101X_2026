@@ -322,14 +322,16 @@ void lemlib::Chassis::setDrive(double left, double right) {
   drivetrain.rightMotors->move_voltage(right);
 }
 
-void lemlib::Chassis::wiggle(double times) {
+void lemlib::Chassis::wiggle(double times, double velocity) {
   int i = 0;
   while (times >= i) {
-    setDrive(12000, 0);
-    pros::delay(200);
-    setDrive(0, 12000);
-    pros::delay(200);
+    setDrive(velocity, -velocity);
+    pros::delay(400);
+    setDrive(-velocity, velocity);
+    pros::delay(400);
+    i++;
   }
+  setDrive(0, 0);
 }
 
 void lemlib::Chassis::resetPositionWithSensorAlways(pros::Distance* sensor, 

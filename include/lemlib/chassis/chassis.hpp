@@ -937,7 +937,7 @@ class Chassis {
         void resetPositionRight();
         void resetPositionFront();
         void setDrive(double left, double right);
-        void wiggle(double times);
+        void wiggle(double times, double velocity);
         double getFrontDistance();
         void resetPositionLeftAlways();
         void resetPositionRightAlways();
