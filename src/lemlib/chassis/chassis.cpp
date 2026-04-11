@@ -384,6 +384,31 @@ void lemlib::Chassis::resetPositionWithSensorAlways(pros::Distance* sensor,
     }
 }
 
+void lemlib::Chassis::resetPositionWithSensorFallback(
+    pros::Distance* primary, double primary_offset, double primary_angle_offset,
+    pros::Distance* fallback, double fallback_offset, double fallback_angle_offset) {
+
+    if (primary != nullptr && primary->get_distance() > 30 && primary->get_distance() <= 2000) {
+        resetPositionWithSensorAlways(primary, primary_offset, primary_angle_offset);
+    } else if (fallback != nullptr && fallback->get_distance() > 30 && fallback->get_distance() <= 2000) {
+        resetPositionWithSensorAlways(fallback, fallback_offset, fallback_angle_offset);
+    }
+}
+
+void lemlib::Chassis::resetPositionLeftFirst() {
+    resetPositionWithSensorFallback(
+        sensors.distanceLeft, LEFT_SENSOR_OFFSET, -90.0,
+        sensors.distanceRight, RIGHT_SENSOR_OFFSET, 90.0
+    );
+}
+
+void lemlib::Chassis::resetPositionRightFirst() {
+    resetPositionWithSensorFallback(
+        sensors.distanceRight, RIGHT_SENSOR_OFFSET, 90.0,
+        sensors.distanceLeft, LEFT_SENSOR_OFFSET, -90.0
+    );
+}
+
 void lemlib::Chassis::resetPositionFrontAlways() {
     if (sensors.distanceFront == nullptr) return;
 

@@ -947,6 +947,13 @@ class Chassis {
         void resetPositionLeftSkills();
         void resetPositionRightSkills();
         void resetPositionFrontSkills();
+        void resetPositionLeftAlwaysSafe();
+        void resetPositionRightAlwaysSafe();
+        void resetPositionFrontAlwaysSafe();
+        void resetPositionWithSensorFallback(pros::Distance* primary, double primary_offset, double primary_angle_offset,
+        pros::Distance* fallback, double fallback_offset, double fallback_angle_offset);
+        void resetPositionLeftFirst();
+        void resetPositionRightFirst();
         
         // The master logic function used by the wrappers above
         void resetPositionWithSensor(pros::Distance* sensor, double sensor_offset, double sensor_angle_offset);

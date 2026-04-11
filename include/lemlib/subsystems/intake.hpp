@@ -44,7 +44,11 @@ class Intake {
 
         void intakeOutSkills();
 
+        void intakeOutSkillsSlow();
+        
         void intakeOutAutonSlow();
+
+        void outtakeAutonSkills();
 
         //intake jam functions
 

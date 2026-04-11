@@ -43,16 +43,27 @@ void Intake::hoard() {
 }
 
 void Intake::outtake() {
-    moveBottomIntake(-600);
-    moveMiddleIntake(-600);
-    moveTopIntake(-600);
+    //moveBottomIntake(-600);
+    //moveMiddleIntake(-600);
+    //moveTopIntake(-600);
+    bottomIntakeMotor.move_voltage(-4000);
+    middleIntakeMotor.move_voltage(-8000);
+    topIntakeMotor.move_voltage(-12000);
 }
 
 void Intake::outtakeAuton() {
-    moveBottomIntake(-200);
-    moveMiddleIntake(-500);
-    moveTopIntake(-600);
+    bottomIntakeMotor.move_voltage(-4000);
+    middleIntakeMotor.move_voltage(-8000);
+    topIntakeMotor.move_voltage(-12000);
 }
+
+void Intake::outtakeAutonSkills() {
+    bottomIntakeMotor.move_voltage(-4000);
+    middleIntakeMotor.move_voltage(-5000);
+    //topIntakeMotor.move_voltage(-12000);
+}
+
+
 
 void Intake::middleGoal() {
     moveBottomIntake(600);
@@ -95,11 +106,17 @@ void Intake::intakeOutAutonSlow() {
 }
 
 void Intake::intakeOutSkills() {
-    intake.intakePneumaticV(1);
-    moveBottomIntake(-10);
-    moveMiddleIntake(-10);
+    moveBottomIntake(150);
+    moveMiddleIntake(150);
     moveTopIntake(-75);
 }
+
+void Intake::intakeOutSkillsSlow() {
+    moveBottomIntake(130);
+    moveMiddleIntake(130);
+    moveTopIntake(-50);
+}
+
 
 void Intake::intakePneumaticChange() {
     if (intakePneumaticActive) {
