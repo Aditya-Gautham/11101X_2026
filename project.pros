@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "skills",
+    "project_name": "swp",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -592,9 +592,9 @@
       }
     },
     "upload_options": {
-      "description": "SKILLLLS!!!",
+      "description": "swp",
       "icon": "pros",
-      "slot": 8
+      "slot": 1
     },
     "use_early_access": false
   }

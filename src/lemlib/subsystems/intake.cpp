@@ -43,12 +43,12 @@ void Intake::hoard() {
 }
 
 void Intake::outtake() {
-    //moveBottomIntake(-600);
-    //moveMiddleIntake(-600);
-    //moveTopIntake(-600);
-    bottomIntakeMotor.move_voltage(-4000);
-    middleIntakeMotor.move_voltage(-8000);
-    topIntakeMotor.move_voltage(-12000);
+    moveBottomIntake(-600);
+    moveMiddleIntake(-600);
+    moveTopIntake(-600);
+    //bottomIntakeMotor.move_voltage(-4000);
+    //middleIntakeMotor.move_voltage(-8000);
+    //topIntakeMotor.move_voltage(-12000);
 }
 
 void Intake::outtakeAuton() {

@@ -180,7 +180,7 @@ Descore descore(descorePneumatic);
 
 IntakeLift intakeLift(intakeLiftPneumatic);
 
-bool skillsFlag = true;
+bool skillsFlag = false;
 
 void initialize() {
     pros::screen::set_eraser(pros::Color::black);
@@ -224,9 +224,9 @@ void autonomous() {
             pros::screen::print(pros::E_TEXT_MEDIUM, 0, "x: %.2f",pose.x);
             pros::screen::print(pros::E_TEXT_MEDIUM, 1, "y: %.2f", pose.y);
             pros::screen::print(pros::E_TEXT_MEDIUM, 2, "theta: %.2f", pose.theta);
-            if (pose.theta > 136) {
-                pros::screen::print(pros::E_TEXT_MEDIUM, 3, "Theta exceeded 91!");
-            }
+            //if (pose.theta > 136) {
+            //    pros::screen::print(pros::E_TEXT_MEDIUM, 3, "Theta exceeded 91!");
+           //}
             pros::delay(20); // Update every 20ms
         }
     });
@@ -240,13 +240,15 @@ void autonomous() {
     //leftSevenLong();
     //leftSixLongThreeMiddle();
     //rightFourLongThreeLow();
-    //rightSevenLong();
+
     //rightFourLong();
+    //rightSixLong();
+    //rightSevenLong();
     //rightNineLong();
     //rightSixLongThreeMiddle();
     //rightThreeGoal();
-    //soloWinPoint();
-    skills();
+    soloWinPoint();
+    //skills();
     }
 }
 
