@@ -90,7 +90,7 @@ void Intake::intakeOutAuton() {
     //moveTopIntake(400);
     //moveTopIntake(300);
     //just for skills
-    moveTopIntake(-125);
+    moveTopIntake(-100);
 }
 
 void Intake::intakeOutAutonSlow() {

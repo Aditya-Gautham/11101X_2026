@@ -246,8 +246,8 @@ void autonomous() {
     //rightSevenLong();
     //rightNineLong();
     //rightSixLongThreeMiddle();
-    //rightThreeGoal();
-    soloWinPoint();
+    rightThreeGoal();
+    //soloWinPoint();
     //skills();
     }
 }

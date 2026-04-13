@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "swp",
+    "project_name": "halfsolo",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -592,9 +592,9 @@
       }
     },
     "upload_options": {
-      "description": "swp",
+      "description": "rightSplit",
       "icon": "pros",
-      "slot": 1
+      "slot": 6
     },
     "use_early_access": false
   }
