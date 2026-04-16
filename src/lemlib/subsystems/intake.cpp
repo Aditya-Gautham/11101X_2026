@@ -52,23 +52,45 @@ void Intake::outtake() {
 }
 
 void Intake::outtakeAuton() {
-    bottomIntakeMotor.move_voltage(-4000);
-    middleIntakeMotor.move_voltage(-8000);
-    topIntakeMotor.move_voltage(-12000);
+    bottomIntakeMotor.move_voltage(-6000);
+    middleIntakeMotor.move_voltage(-9000);
+    topIntakeMotor.move_voltage(-10000);
 }
 
 void Intake::outtakeAutonSkills() {
-    bottomIntakeMotor.move_voltage(-4000);
-    middleIntakeMotor.move_voltage(-5000);
+    bottomIntakeMotor.move_voltage(-3200);
+    middleIntakeMotor.move_voltage(-5200);
     //topIntakeMotor.move_voltage(-12000);
 }
 
+void Intake::outtakeAutonSkillsSlow() {
+    bottomIntakeMotor.move_voltage(-3000);
+    middleIntakeMotor.move_voltage(-4000);
+    topIntakeMotor.move_voltage(-3000);
+}
 
+void Intake::outtakeAutonSkillsTop() {
+    bottomIntakeMotor.move_voltage(-2700);
+    middleIntakeMotor.move_voltage(-5000);
+    topIntakeMotor.move_voltage(-3000);
+}
+
+void Intake::intakeOutSkills2() {
+    bottomIntakeMotor.move_voltage(-3000);
+    middleIntakeMotor.move_voltage(-5000);
+    topIntakeMotor.move_voltage(-1000);
+}
 
 void Intake::middleGoal() {
     moveBottomIntake(600);
     moveMiddleIntake(600);
     moveTopIntake(-600);
+}
+
+void Intake::middleGoalSplit() {
+    moveBottomIntake(400);
+    moveMiddleIntake(400);
+    moveTopIntake(-300);
 }
 
 void Intake::longGoal() {
@@ -84,13 +106,13 @@ void Intake::stopIntake() {
 }
 
 void Intake::intakeOutAuton() {
-    moveBottomIntake(200);
-    moveMiddleIntake(200);
+    moveBottomIntake(175);
+    moveMiddleIntake(175);
     //moveTopIntake(250);
     //moveTopIntake(400);
     //moveTopIntake(300);
     //just for skills
-    moveTopIntake(-100);
+    moveTopIntake(-75);
 }
 
 void Intake::intakeOutAutonSlow() {
@@ -106,15 +128,15 @@ void Intake::intakeOutAutonSlow() {
 }
 
 void Intake::intakeOutSkills() {
-    moveBottomIntake(150);
-    moveMiddleIntake(150);
-    moveTopIntake(-75);
+    bottomIntakeMotor.move_voltage(4500);
+    middleIntakeMotor.move_voltage(4000);
+    topIntakeMotor.move_voltage(-3000);
 }
 
 void Intake::intakeOutSkillsSlow() {
-    moveBottomIntake(130);
-    moveMiddleIntake(130);
-    moveTopIntake(-50);
+    bottomIntakeMotor.move_voltage(4000);
+    middleIntakeMotor.move_voltage(4500);
+    topIntakeMotor.move_voltage(-2600);
 }
 
 

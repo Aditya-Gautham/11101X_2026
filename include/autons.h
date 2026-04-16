@@ -15,7 +15,7 @@ void rightFourLong();
 void rightSixLong();
 void rightSevenLong();
 void rightNineLong();
-void rightSixLongThreeMiddle();
+void rightSixLongThreeLow();
 void rightThreeGoal();
 void soloWinPoint();
 

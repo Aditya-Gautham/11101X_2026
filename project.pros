@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "halfsolo",
+    "project_name": "rightSeven",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -592,9 +592,9 @@
       }
     },
     "upload_options": {
-      "description": "rightSplit",
+      "description": "rightSeven",
       "icon": "pros",
-      "slot": 6
+      "slot": 2
     },
     "use_early_access": false
   }

@@ -45,8 +45,16 @@ class Intake {
         void intakeOutSkills();
 
         void intakeOutSkillsSlow();
+
+        void outtakeAutonSkillsTop();
+
+        void outtakeAutonSkillsSlow();
         
         void intakeOutAutonSlow();
+
+        void intakeOutSkills2();
+
+        void middleGoalSplit();
 
         void outtakeAutonSkills();
 
