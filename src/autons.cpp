@@ -8,9 +8,7 @@
 //
 
 void odomTest() {
-    chassis.setPose(0, 0, 0);
-    chassis.turnToHeading(90, 2000);
-    /*
+/*
     matchload.matchloadV(1);
     intake.intakePneumaticV(1);
     intakeLift.intakeLiftV(0);
@@ -26,20 +24,11 @@ void odomTest() {
     pros::delay(1000);
     intake.stopIntake();
     */
-    /*
-    //chassis.setPose(0, 0, 0);
-    intakeLift.intakeLiftV(1);
-    intake.intakePneumaticV(1);;
-    intake.outtake();
-    pros::delay(50);
-    intake.outtakeAutonSkillsTop();
-    pros::delay(2800);
-   /* pros::delay(200);
-    intake.intakeOutSkills2();*/
+    /**/
 
-    /*
     chassis.setPose(48, -28, 180);
-    chassis.resetPositionLeftAlways();
+    intakeLift.intakeLiftV(0);
+    /*chassis.resetPositionLeftAlways();
     chassis.resetPositionFrontAlways();
     intakeLift.intakeLiftV(0);
     intake.intakePneumaticV(0);
@@ -71,6 +60,7 @@ void odomTest() {
     chassis.setDrive(-2000, -2000);
     pros::delay(200);
     chassis.setDrive(0,0);
+    */
     chassis.turnToHeading(180, 500, {.minSpeed = 5, .pidSelector = 1});
     pros::delay(500);
     chassis.resetPositionFrontAlways();
@@ -90,13 +80,13 @@ void odomTest() {
     intake.moveTopIntake(-500);
     pros::delay(350);
     intake.intakeOutSkills();
-    pros::delay(2200);
+    pros::delay(2300);
     intake.intakeOutSkillsSlow();
     matchload.matchloadV(0);
     pros::delay(1000);
     intake.stopIntake();
     intake.intakePneumaticV(0);
-    chassis.moveToPoint(-20, -20, 2000, {.minSpeed = 10, .earlyExitRange = 1});
+    chassis.moveToPoint(-18, -18, 2000, {.minSpeed = 10, .earlyExitRange = 1});
     intake.moveBottomIntake(600);
     chassis.moveToPoint(-10, -10, 2000, {.forwards = false, .minSpeed = 10});
     pros::delay(500);
