@@ -8,8 +8,14 @@
 //
 
 void odomTest() {
-    chassis.setPose(0, 0, 0);
-    chassis.turnToHeading(90, 2000);
+    //chassis.setPose(0, 0, 0);
+    chassis.setPose(15.5, 23, 12.4);
+    intake.hoard();
+    chassis.moveToPoint(23.5, 46.5, 2000, {.minSpeed = 75, .earlyExitRange = 5});
+    chassis.waitUntil(11);
+    matchload.matchloadV(1);
+    chassis.moveToPose(40, 62.5, 80, 4000, {.minSpeed = 10, .pidSelector = 0});
+    matchload.matchloadV(0);
     /*
     matchload.matchloadV(1);
     intake.intakePneumaticV(1);
