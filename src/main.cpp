@@ -180,7 +180,7 @@ Descore descore(descorePneumatic);
 
 IntakeLift intakeLift(intakeLiftPneumatic);
 
-bool skillsFlag = false;
+bool skillsFlag = true;
 
 void initialize() {
     pros::screen::set_eraser(pros::Color::black);

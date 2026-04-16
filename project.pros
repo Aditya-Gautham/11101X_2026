@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "rightSeven",
+    "project_name": "nigex",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -592,9 +592,9 @@
       }
     },
     "upload_options": {
-      "description": "rightSeven",
+      "description": "nigex",
       "icon": "pros",
-      "slot": 2
+      "slot": 8
     },
     "use_early_access": false
   }
