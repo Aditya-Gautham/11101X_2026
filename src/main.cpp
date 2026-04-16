@@ -145,9 +145,9 @@ lemlib::ControllerSettings headingControllerCurve(3, // (kP) 2 1
 );
 
 // sensors for odometry
-lemlib::OdomSensors sensors(&vertical, 
-                            nullptr, 
-                            &horizontal, 
+lemlib::OdomSensors sensors(&vertical,
+                            nullptr,
+                            &horizontal,
                             nullptr,
                             &imu,
                             &distanceLeft,
