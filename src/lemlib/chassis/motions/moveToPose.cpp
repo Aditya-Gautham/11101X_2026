@@ -18,34 +18,13 @@ void lemlib::Chassis::moveToPose(float x, float y, float theta, int timeout, Mov
         return;
     }
 
-    // select PID settings based on pidSelector
-    ControllerSettings selectedLateralSettings = (params.pidSelector == 0) ? lateralSettings : linearSettingsPose;
-    ControllerSettings selectedHeadingSettings = (params.pidSelector == 0) ? headingSettings : headingSettingsPose;
-
-    // create local PIDs and exit conditions for pose-specific PID selection
-    PID localLateralPID(selectedLateralSettings.kP, selectedLateralSettings.kI, selectedLateralSettings.kD,
-                        selectedLateralSettings.windupRange, true);
-    PID localHeadingPID(selectedHeadingSettings.kP, selectedHeadingSettings.kI, selectedHeadingSettings.kD,
-                        selectedHeadingSettings.windupRange, true);
-    ExitCondition localLateralLargeExit(selectedLateralSettings.largeError, selectedLateralSettings.largeErrorTimeout);
-    ExitCondition localLateralSmallExit(selectedLateralSettings.smallError, selectedLateralSettings.smallErrorTimeout);
-    ExitCondition localHeadingLargeExit(selectedHeadingSettings.largeError, selectedHeadingSettings.largeErrorTimeout);
-    ExitCondition localHeadingSmallExit(selectedHeadingSettings.smallError, selectedHeadingSettings.smallErrorTimeout);
-
-    PID* lateralPIDPtr = (params.pidSelector == 0) ? &lateralPID : &localLateralPID;
-    PID* headingPIDPtr = (params.pidSelector == 0) ? &headingPID : &localHeadingPID;
-    ExitCondition* lateralLargeExitPtr = (params.pidSelector == 0) ? &lateralLargeExit : &localLateralLargeExit;
-    ExitCondition* lateralSmallExitPtr = (params.pidSelector == 0) ? &lateralSmallExit : &localLateralSmallExit;
-    ExitCondition* headingLargeExitPtr = (params.pidSelector == 0) ? &headingLargeExit : &localHeadingLargeExit;
-    ExitCondition* headingSmallExitPtr = (params.pidSelector == 0) ? &headingSmallExit : &localHeadingSmallExit;
-
     // reset PIDs and exit conditions
-    lateralPIDPtr->reset();
-    lateralLargeExitPtr->reset();
-    lateralSmallExitPtr->reset();
-    headingPIDPtr->reset();
-    headingLargeExitPtr->reset();
-    headingSmallExitPtr->reset();
+    lateralPID.reset();
+    lateralLargeExit.reset();
+    lateralSmallExit.reset();
+    headingPID.reset();
+    headingLargeExit.reset();
+    headingSmallExit.reset();
 
     // calculate target pose in standard form
     Pose target(x, y, M_PI_2 - degToRad(theta));
@@ -67,7 +46,7 @@ void lemlib::Chassis::moveToPose(float x, float y, float theta, int timeout, Mov
 
     // main loop
     while (!timer.isDone() &&
-           ((!lateralSettled || (!headingLargeExitPtr->getExit() && !headingSmallExitPtr->getExit())) || !close) &&
+           ((!lateralSettled || (!headingLargeExit.getExit() && !headingSmallExit.getExit())) || !close) &&
            this->motionRunning) {
         // update position
         const Pose pose = getPose(true, true);
@@ -86,7 +65,7 @@ void lemlib::Chassis::moveToPose(float x, float y, float theta, int timeout, Mov
         }
 
         // check if the lateral controller has settled
-        if (lateralLargeExitPtr->getExit() && lateralSmallExitPtr->getExit()) lateralSettled = true;
+        if (lateralLargeExit.getExit() && lateralSmallExit.getExit()) lateralSettled = true;
 
         // calculate the carrot point
         Pose carrot = target - Pose(cos(target.theta), sin(target.theta)) * params.lead * distTarget;
@@ -114,14 +93,14 @@ void lemlib::Chassis::moveToPose(float x, float y, float theta, int timeout, Mov
         else lateralError *= sgn(cos(angleError(pose.theta, pose.angle(carrot))));
 
         // update exit conditions
-        lateralSmallExitPtr->update(lateralError);
-        lateralLargeExitPtr->update(lateralError);
-        headingSmallExitPtr->update(radToDeg(headingError));
-        headingLargeExitPtr->update(radToDeg(headingError));
+        lateralSmallExit.update(lateralError);
+        lateralLargeExit.update(lateralError);
+        headingSmallExit.update(radToDeg(headingError));
+        headingLargeExit.update(radToDeg(headingError));
 
         // get output from PIDs
-        float lateralOut = lateralPIDPtr->update(lateralError);
-        float headingOut = headingPIDPtr->update(radToDeg(headingError));
+        float lateralOut = lateralPID.update(lateralError);
+        float headingOut = headingPID.update(radToDeg(headingError));
 
         // apply restrictions on heading speed
         headingOut = std::clamp(headingOut, -params.maxSpeed, params.maxSpeed);
@@ -130,7 +109,7 @@ void lemlib::Chassis::moveToPose(float x, float y, float theta, int timeout, Mov
         lateralOut = std::clamp(lateralOut, -params.maxSpeed, params.maxSpeed);
 
         // constrain lateral output by max accel
-        if (!close) lateralOut = slew(lateralOut, prevLateralOut, selectedLateralSettings.slew);
+        if (!close) lateralOut = slew(lateralOut, prevLateralOut, lateralSettings.slew);
 
         // constrain lateral output by the max speed it can travel at without
         // slipping

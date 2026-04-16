@@ -84,18 +84,6 @@ lemlib::ControllerSettings headingController(1, // (kP) 2 1
                                              0 // maximum acceleration (slew)
 );
 
-// extra heading motion controller
-lemlib::ControllerSettings headingControllerCurve(3, // (kP) 2 1
-                                                  0, // (kI)
-                                                  30, // (kD) 20 1
-                                                  0, // anti windup
-                                                  1, // small error range, in degrees
-                                                  100, // small error range timeout, in milliseconds
-                                                  2, // large error range, in degrees
-                                                  500, // large error range timeout, in milliseconds
-                                                  0 // maximum acceleration (slew)
-);
-
 // extra lateral motion controller
 lemlib::ControllerSettings linearControllerCurve(4, // (kP) 4.067
                                                  0, // (kI)
@@ -144,28 +132,16 @@ lemlib::ControllerSettings angularController180(1.59, // (kP)1.7 1.6
                                                   20 // maximum acceleration (slew)
 );
 
-// pose-specific lateral motion controller
-lemlib::ControllerSettings linearControllerPose(8, // (kP)
-                                                0, // (kI)
-                                                4, // (kD)
-                                                0, //
-                                                1, // small error range, in inches
-                                                100, // small error range timeout, in milliseconds
-                                                3, // large error range, in inches
-                                                300, // large error range timeout, in milliseconds
-                                                15 // maximum acceleration (slew)
-);
-
-// pose-specific heading motion controller
-lemlib::ControllerSettings headingControllerPose(1, // (kP)
-                                                 0, // (kI)
-                                                 30, // (kD)
-                                                 0, // anti windup
-                                                 1, // small error range, in degrees
-                                                 100, // small error range timeout, in milliseconds
-                                                 2, // large error range, in degrees
-                                                 500, // large error range timeout, in milliseconds
-                                                 0 // maximum acceleration (slew)
+// extra heading motion controller
+lemlib::ControllerSettings headingControllerCurve(3, // (kP) 2 1
+                                                  0, // (kI)
+                                                  30, // (kD) 20 1
+                                                  0, // anti windup
+                                                  1, // small error range, in degrees
+                                                  100, // small error range timeout, in milliseconds
+                                                  2, // large error range, in degrees
+                                                  500, // large error range timeout, in milliseconds
+                                                  0 // maximum acceleration (slew)
 );
 
 // sensors for odometry
@@ -192,7 +168,7 @@ lemlib::ExpoDriveCurve steerCurve(10, // joystick deadband out of 127
 );
 
 // create the chassis
-lemlib::Chassis chassis(drivetrain, linearController, angularController, headingController, linearControllerCurve, angularControllerShort, angularController135, angularController180, headingControllerCurve, linearControllerPose, headingControllerPose, sensors);
+lemlib::Chassis chassis(drivetrain, linearController, angularController, headingController, linearControllerCurve, angularControllerShort, angularController135, angularController180, headingControllerCurve, sensors);
 
 Intake intake(bottomIntakeMotor, middleIntakeMotor, topIntakeMotor, colorSensor, intakePneumatic);
 

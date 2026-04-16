@@ -289,8 +289,6 @@ struct MoveToPoseParams {
         /** distance between the robot and target point where the movement will exit. Only has an effect if minSpeed is
          * non-zero.*/
         float earlyExitRange = 0;
-        /** PID selector: 0 for normal PID values, 1 for pose-specific PID values. 0 by default */
-        int pidSelector = 0;
 };
 
 /**
@@ -369,11 +367,6 @@ class Chassis {
          */
         Chassis(Drivetrain drivetrain, ControllerSettings linearSettings, ControllerSettings angularSettings, ControllerSettings headingSettings,
                 ControllerSettings linearSettingsCurve, ControllerSettings angularSettingsShort, ControllerSettings angularSettings135, ControllerSettings angularSettings180, ControllerSettings headingSettingsCurve,
-                OdomSensors sensors, DriveCurve* throttleCurve = &defaultDriveCurve,
-                DriveCurve* steerCurve = &defaultDriveCurve);
-        Chassis(Drivetrain drivetrain, ControllerSettings linearSettings, ControllerSettings angularSettings, ControllerSettings headingSettings,
-                ControllerSettings linearSettingsCurve, ControllerSettings angularSettingsShort, ControllerSettings angularSettings135, ControllerSettings angularSettings180, ControllerSettings headingSettingsCurve,
-                ControllerSettings linearSettingsPose, ControllerSettings headingSettingsPose,
                 OdomSensors sensors, DriveCurve* throttleCurve = &defaultDriveCurve,
                 DriveCurve* steerCurve = &defaultDriveCurve);
         /**
@@ -1003,8 +996,6 @@ class Chassis {
         ControllerSettings angularSettings135;
         ControllerSettings angularSettings180;
         ControllerSettings headingSettingsCurve;
-        ControllerSettings linearSettingsPose;
-        ControllerSettings headingSettingsPose;
 
         Drivetrain drivetrain;
         OdomSensors sensors;
