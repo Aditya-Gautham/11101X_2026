@@ -7,7 +7,7 @@
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-pros::MotorGroup leftMotors({-18, -16, -6}, pros::MotorGearset::blue);
+pros::MotorGroup leftMotors({-3, -16, -6}, pros::MotorGearset::blue);
 pros::MotorGroup rightMotors({1, 13, 2}, pros::MotorGearset::blue);
 pros::Motor bottomIntakeMotor(12, pros::MotorGearset::blue);
 pros::Motor middleIntakeMotor(-15, pros::MotorGearset::blue);
@@ -109,7 +109,7 @@ lemlib::ControllerSettings angularControllerShort(2.07, // (kP)1.7 1.6
 );
 
 // extra angular motion controller
-lemlib::ControllerSettings angularController135(1.68, // (kP)1.7 1.6
+lemlib::ControllerSettings angularController135(1.69, // (kP)1.7 1.6
                                                   0, // (kI)
                                                   11, // (kD)11 10.5
                                                   0, // anti windup
@@ -224,29 +224,28 @@ void autonomous() {
             pros::screen::print(pros::E_TEXT_MEDIUM, 0, "x: %.2f",pose.x);
             pros::screen::print(pros::E_TEXT_MEDIUM, 1, "y: %.2f", pose.y);
             pros::screen::print(pros::E_TEXT_MEDIUM, 2, "theta: %.2f", pose.theta);
-            //if (pose.theta > 136) {
-            //    pros::screen::print(pros::E_TEXT_MEDIUM, 3, "Theta exceeded 91!");
-           //}
+            if (pose.theta > 136) {
+                pros::screen::print(pros::E_TEXT_MEDIUM, 3, "Theta exceeded 91!");
+           }
             pros::delay(20); // Update every 20ms
         }
     });
 
     if (runAuton)
     {
-    //odomTest();
+    odomTest();
     //leftFourLongFourMiddle();
     //leftFourLongFourMiddleWing();
     //leftFourLong();
     //leftSevenLong();
     //leftSixLongThreeMiddle();
     //rightFourLongThreeLow();
-
     //rightFourLong();
     //rightSixLong();
     //rightSevenLong();
     //rightNineLong();
-    //rightSixLongThreeMiddle();
-    rightThreeGoal();
+    //rightSixLongThreeLow();
+    //rightThreeGoal();
     //soloWinPoint();
     //skills();
     }
@@ -272,15 +271,15 @@ void opcontrol() {
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
             intake.outtake();
         }
+        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+            intake.middleGoal();
+        }
         // handle holds on either L1 or R2 with non-blocking timer
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) ||
-                controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2))
+        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1))
         {
             bool curL1 = controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1);
-            bool curR2 = controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2);
-            bool active = curL1 || curR2;
-
-            if (active && holdSourceL1) {
+            bool active = curL1;
+            if (active) {
                 if (holdState == IH_Off) {
                     holdState = IH_PreReverse;
                     holdStart = pros::millis();
@@ -298,27 +297,7 @@ void opcontrol() {
                 }
             }
 
-            if (active && !holdSourceL1) {
-                if (holdState == IH_Off) {
-                    holdState = IH_PreReverse;
-                    holdStart = pros::millis();
-                    intake.moveBottomIntake(-600);
-                    intake.moveMiddleIntake(-600);
-                    intake.moveTopIntake(-600);
-                    holdSourceL1 = curL1;
-                }
-                if (holdState == IH_PreReverse) {
-                    if (pros::millis() - holdStart >= 100) {
-                        holdState = IH_Intake;
-                    }
-                }
-                if (holdState == IH_Intake) {
-                        intake.middleGoal();
-                }
-            }
-
-            prevL1 = curL1; // track L1 now
-            prevR2 = curR2;
+            prevL1 = curL1;
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1))
         {
@@ -327,7 +306,8 @@ void opcontrol() {
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y))
         {
-            intake.intakeOutAutonSlow();
+            intakeLift.intakeLiftV(1);
+            intake.outtakeAutonSkillsTop();
         }
         else {
             intake.stopIntake();
