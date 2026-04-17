@@ -275,8 +275,8 @@ void lemlib::Chassis::resetPositionWithSensor(pros::Distance* sensor,
 }
 
 constexpr double LEFT_SENSOR_OFFSET  = 2.88;
-constexpr double RIGHT_SENSOR_OFFSET = 3;
-constexpr double FRONT_SENSOR_OFFSET = 5.6;
+constexpr double RIGHT_SENSOR_OFFSET = 3.0;
+constexpr double FRONT_SENSOR_OFFSET = 6.0;
 
 void lemlib::Chassis::resetPositionLeft() {
     resetPositionWithSensor(sensors.distanceLeft, LEFT_SENSOR_OFFSET, -90.0);
@@ -372,8 +372,8 @@ void lemlib::Chassis::resetPositionWithSensorAlways(pros::Distance* sensor,
     }
 
     double angleDiff = fabs(normalizedAngle - targetWallAngleRad);
-    double correctedDist = (sensorReading * cos(angleDiff)) + sensor_offset;
     if (angleDiff > M_PI) angleDiff = 2 * M_PI - angleDiff;
+    double correctedDist = (sensorReading * cos(angleDiff)) + sensor_offset;
     
     double calculatedPos = wallCoordinate - (correctedDist * (wallCoordinate > 0 ? 1 : -1));
 
@@ -408,7 +408,7 @@ void lemlib::Chassis::resetPositionRightFirst() {
         sensors.distanceLeft, LEFT_SENSOR_OFFSET, -90.0
     );
 }
-
+/*
 void lemlib::Chassis::resetPositionFrontAlways() {
     if (sensors.distanceFront == nullptr) return;
 
@@ -431,6 +431,7 @@ void lemlib::Chassis::resetPositionFrontAlways() {
 
     this->setPose(pose.x, calculatedY, pose.theta);
 }
+*/
 
 void lemlib::Chassis::resetPositionLeftAlways() {
     resetPositionWithSensorAlways(sensors.distanceLeft, LEFT_SENSOR_OFFSET, -90.0);
@@ -516,7 +517,7 @@ void lemlib::Chassis::resetPositionWithSensorSkills(pros::Distance* sensor,
         this->setPose(pose.x, calculatedPos, pose.theta);
     }
 }
-
+/*
 void lemlib::Chassis::resetPositionFrontSkills() {
     if (sensors.distanceFront == nullptr) return;
 
@@ -544,6 +545,7 @@ void lemlib::Chassis::resetPositionFrontSkills() {
 
     this->setPose(pose.x, calculatedY, pose.theta);
 }
+*/
 
 // Convenience wrappers
 void lemlib::Chassis::resetPositionLeftSkills() {
@@ -552,4 +554,12 @@ void lemlib::Chassis::resetPositionLeftSkills() {
 
 void lemlib::Chassis::resetPositionRightSkills() {
     resetPositionWithSensorSkills(sensors.distanceRight, RIGHT_SENSOR_OFFSET, 90.0);
+}
+
+void lemlib::Chassis::resetPositionFrontSkills() {
+    resetPositionWithSensorSkills(sensors.distanceFront, FRONT_SENSOR_OFFSET, 0.0);
+}
+
+void lemlib::Chassis::resetPositionFrontAlways() {
+    resetPositionWithSensorAlways(sensors.distanceFront, FRONT_SENSOR_OFFSET, 0.0);
 }

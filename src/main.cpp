@@ -180,7 +180,7 @@ Descore descore(descorePneumatic);
 
 IntakeLift intakeLift(intakeLiftPneumatic);
 
-bool skillsFlag = true;
+bool skillsFlag = false;
 
 void initialize() {
     pros::screen::set_eraser(pros::Color::black);
@@ -233,7 +233,7 @@ void autonomous() {
 
     if (runAuton)
     {
-    odomTest();
+    //odomTest();
     //leftFourLongFourMiddle();
     //leftFourLongFourMiddleWing();
     //leftFourLong();
@@ -245,7 +245,7 @@ void autonomous() {
     //rightSevenLong();
     //rightNineLong();
     //rightSixLongThreeLow();
-    //rightThreeGoal();
+    rightThreeGoal();
     //soloWinPoint();
     //skills();
     }

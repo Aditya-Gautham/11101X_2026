@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "nigex",
+    "project_name": "halfSolo",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -592,9 +592,9 @@
       }
     },
     "upload_options": {
-      "description": "nigex",
+      "description": "halfSolo",
       "icon": "pros",
-      "slot": 8
+      "slot": 7
     },
     "use_early_access": false
   }

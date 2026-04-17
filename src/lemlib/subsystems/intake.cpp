@@ -43,23 +43,23 @@ void Intake::hoard() {
 }
 
 void Intake::outtake() {
-    moveBottomIntake(-600);
-    moveMiddleIntake(-600);
-    moveTopIntake(-600);
-    //bottomIntakeMotor.move_voltage(-4000);
-    //middleIntakeMotor.move_voltage(-8000);
-    //topIntakeMotor.move_voltage(-12000);
+    //moveBottomIntake(-600);
+    //moveMiddleIntake(-600);
+    //moveTopIntake(-600);
+    bottomIntakeMotor.move_voltage(-4000);
+    middleIntakeMotor.move_voltage(-8000);
+    topIntakeMotor.move_voltage(-12000);
 }
 
 void Intake::outtakeAuton() {
-    bottomIntakeMotor.move_voltage(-6000);
-    middleIntakeMotor.move_voltage(-9000);
+    bottomIntakeMotor.move_voltage(-5000);
+    middleIntakeMotor.move_voltage(-7000);
     topIntakeMotor.move_voltage(-10000);
 }
 
 void Intake::outtakeAutonSkills() {
-    bottomIntakeMotor.move_voltage(-3200);
-    middleIntakeMotor.move_voltage(-5200);
+    bottomIntakeMotor.move_voltage(-3500);
+    middleIntakeMotor.move_voltage(-7000);
     //topIntakeMotor.move_voltage(-12000);
 }
 
@@ -70,8 +70,8 @@ void Intake::outtakeAutonSkillsSlow() {
 }
 
 void Intake::outtakeAutonSkillsTop() {
-    bottomIntakeMotor.move_voltage(-2700);
-    middleIntakeMotor.move_voltage(-5000);
+    bottomIntakeMotor.move_voltage(-3500);
+    middleIntakeMotor.move_voltage(-6000);
     topIntakeMotor.move_voltage(-3000);
 }
 
@@ -82,9 +82,9 @@ void Intake::intakeOutSkills2() {
 }
 
 void Intake::middleGoal() {
-    moveBottomIntake(600);
-    moveMiddleIntake(600);
-    moveTopIntake(-600);
+  bottomIntakeMotor.move_voltage(12000);
+    middleIntakeMotor.move_voltage(12000);
+    topIntakeMotor.move_voltage(-12000);
 }
 
 void Intake::middleGoalSplit() {
@@ -106,13 +106,18 @@ void Intake::stopIntake() {
 }
 
 void Intake::intakeOutAuton() {
-    moveBottomIntake(175);
-    moveMiddleIntake(175);
+    //
+    bottomIntakeMotor.move_voltage(8000);
+    middleIntakeMotor.move_voltage(8000);
+    topIntakeMotor.move_voltage(-6000);
+
+    //moveBottomIntake(175);
+    //moveMiddleIntake(200);
     //moveTopIntake(250);
     //moveTopIntake(400);
     //moveTopIntake(300);
     //just for skills
-    moveTopIntake(-75);
+    //moveTopIntake(-75);
 }
 
 void Intake::intakeOutAutonSlow() {
