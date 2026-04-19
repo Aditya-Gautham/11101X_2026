@@ -806,7 +806,7 @@ void rightSevenLongWing() {
     //matchload #1
     chassis.moveToPoint(47.75, 11.75, 900, {.minSpeed = 50, .pidSelector = 1, .clampDistance = false});
     intake.hoard();
-    pros::delay(900);
+    pros::delay(850);
     chassis.resetPositionLeft();
     chassis.resetPositionFront();
    //long goal #1
@@ -819,12 +819,12 @@ void rightSevenLongWing() {
     intake.intakePneumaticV(1);
     intake.longGoal();
     pros::delay(1400);
-   //chassis.resetPositionLeft();
-   //chassis.resetPositionFront();
+    chassis.resetPositionLeft();
+    chassis.resetPositionFront();
     matchload.matchloadV(0);
     chassis.waitUntilDone();
     intake.intakePneumaticV(0);
-    chassis.moveToPoint(59, 36, 1500, {.minSpeed = 65, .earlyExitRange = 2, .pidSelector = 1});
+    chassis.moveToPoint(59, 34, 1500, {.minSpeed = 65, .earlyExitRange = 2, .pidSelector = 1});
     chassis.moveToPoint(58.5, 57, 1200, {.forwards = false, .minSpeed = 30, .earlyExitRange = 3, .pidSelector = 1,.clampDistance = false});
     //intake.intakePneumaticV(1);
     chassis.turnToHeading(210, 15000, {.minSpeed = 20});

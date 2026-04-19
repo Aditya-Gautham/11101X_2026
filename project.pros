@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "rightSplit",
+    "project_name": "sevenRightWing",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -593,8 +593,8 @@
     },
     "upload_options": {
       "description": "rightSplit",
-      "icon": "planet",
-      "slot": 3,
+      "icon": "ufo",
+      "slot": 4,
       "after": "screen"
     },
     "use_early_access": false
