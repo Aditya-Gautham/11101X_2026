@@ -42,6 +42,8 @@ class Intake {
 
         void outtakeAuton();
 
+        void skillsMiddleGoalDriver();
+        
         void intakeOutSkills();
 
         void intakeOutSkillsSlow();
@@ -50,6 +52,8 @@ class Intake {
 
         void outtakeAutonSkillsSlow();
         
+        void intakeOutAutonSWP();
+
         void intakeOutAutonSlow();
 
         void intakeOutSkills2();
@@ -57,6 +61,12 @@ class Intake {
         void middleGoalSplit();
 
         void outtakeAutonSkills();
+
+        void outtakeSkills();
+
+        void setHold();
+        
+        void setCoast();
 
         //intake jam functions
 

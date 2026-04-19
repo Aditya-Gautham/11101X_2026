@@ -245,7 +245,7 @@ void autonomous() {
     //rightSevenLong();
     //rightNineLong();
     //rightSixLongThreeLow();
-    rightThreeGoal();
+    //rightThreeGoal();
     //soloWinPoint();
     //skills();
     }
@@ -269,11 +269,68 @@ void opcontrol() {
         chassis.arcade(vert, horz);
 
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-            intake.outtake();
+            if (skillsFlag) {
+                intakeLift.intakeLiftV(1);
+                intake.outtakeSkills();
+            }
+            else
+            {
+                intake.outtake();
+            }
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
             intake.middleGoal();
         }
+/*
+       else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) ||
+                controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2))
+        {
+            bool curL1 = controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1);
+            bool curR2 = controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2);
+            bool active = curL1 || curR2;
+
+            if (active && holdSourceL1) {
+                if (holdState == IH_Off) {
+                    holdState = IH_PreReverse;
+                    holdStart = pros::millis();
+                    intake.moveBottomIntake(-300);
+                    holdSourceL1 = curL1;
+                }
+                if (holdState == IH_PreReverse) {
+                    if (pros::millis() - holdStart >= 100) {
+                        holdState = IH_Intake;
+                    }
+                }
+                if (holdState == IH_Intake) {
+                        intake.intakePneumaticV(1);
+                        intakeLift.intakeLiftV(0);
+                        intake.longGoal();
+                }
+            }
+
+            if (active && !holdSourceL1) {
+                if (holdState == IH_Off) {
+                    holdState = IH_PreReverse;
+                    holdStart = pros::millis();
+                    intake.moveBottomIntake(-600);
+                    intake.moveMiddleIntake(-600);
+                    intake.moveTopIntake(-600);
+                    holdSourceL1 = curL1;
+                }
+                if (holdState == IH_PreReverse) {
+                    if (pros::millis() - holdStart >= 150) {
+                        holdState = IH_Intake;
+                    }
+                }
+                if (holdState == IH_Intake) {
+                        intake.skillsMiddleGoalDriver();
+                }
+            }
+
+            prevL1 = curL1; // track L1 now
+            prevR2 = curR2;
+        }
+*/
         // handle holds on either L1 or R2 with non-blocking timer
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1))
         {
@@ -293,22 +350,25 @@ void opcontrol() {
                 }
                 if (holdState == IH_Intake) {
                         intake.intakePneumaticV(1);
+                        intakeLift.intakeLiftV(0);
                         intake.longGoal();
                 }
             }
+            
 
             prevL1 = curL1;
         }
+        
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1))
         {
             intake.intakePneumaticV(0);
+            intakeLift.intakeLiftV(0);
             intake.hoard();
         }
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y))
-        {
-            intakeLift.intakeLiftV(1);
-            intake.outtakeAutonSkillsTop();
-        }
+        //else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y))
+        //{
+        //    intake.intakeOutSkills();
+        //}
         else {
             intake.stopIntake();
             // reset state and prev flags when no button is held

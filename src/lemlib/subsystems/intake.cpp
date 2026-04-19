@@ -37,17 +37,26 @@ void Intake::intakePneumaticV(int value) {
 }
 
 void Intake::hoard() {
-    moveBottomIntake(600);
-    moveMiddleIntake(600);
-    moveTopIntake(600);
+    bottomIntakeMotor.move_voltage(12000);
+    middleIntakeMotor.move_voltage(12000);
+    topIntakeMotor.move_voltage(12000);
+}
+
+void Intake::outtakeSkills() {
+    //moveBottomIntake(-600);
+    //moveMiddleIntake(-600);
+    //moveTopIntake(-600);
+    bottomIntakeMotor.move_voltage(-3000);
+    middleIntakeMotor.move_voltage(-5000);
+    topIntakeMotor.move_voltage(-4000);
 }
 
 void Intake::outtake() {
     //moveBottomIntake(-600);
     //moveMiddleIntake(-600);
     //moveTopIntake(-600);
-    bottomIntakeMotor.move_voltage(-4000);
-    middleIntakeMotor.move_voltage(-8000);
+    bottomIntakeMotor.move_voltage(-12000);
+    middleIntakeMotor.move_voltage(-12000);
     topIntakeMotor.move_voltage(-12000);
 }
 
@@ -58,8 +67,8 @@ void Intake::outtakeAuton() {
 }
 
 void Intake::outtakeAutonSkills() {
-    bottomIntakeMotor.move_voltage(-3500);
-    middleIntakeMotor.move_voltage(-7000);
+    bottomIntakeMotor.move_voltage(-6000);
+    middleIntakeMotor.move_voltage(-8000);
     //topIntakeMotor.move_voltage(-12000);
 }
 
@@ -70,9 +79,9 @@ void Intake::outtakeAutonSkillsSlow() {
 }
 
 void Intake::outtakeAutonSkillsTop() {
-    bottomIntakeMotor.move_voltage(-3500);
-    middleIntakeMotor.move_voltage(-6000);
-    topIntakeMotor.move_voltage(-3000);
+    bottomIntakeMotor.move_voltage(-6000);
+    middleIntakeMotor.move_voltage(-7000);
+    topIntakeMotor.move_voltage(-7000);
 }
 
 void Intake::intakeOutSkills2() {
@@ -105,6 +114,18 @@ void Intake::stopIntake() {
     moveTopIntake(0);
 }
 
+void Intake::setHold() {
+    bottomIntakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    middleIntakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    topIntakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+}
+
+void Intake::setCoast() {
+    bottomIntakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    middleIntakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    topIntakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+}
+
 void Intake::intakeOutAuton() {
     //
     bottomIntakeMotor.move_voltage(8000);
@@ -120,6 +141,12 @@ void Intake::intakeOutAuton() {
     //moveTopIntake(-75);
 }
 
+void Intake::intakeOutAutonSWP() {
+    bottomIntakeMotor.move_voltage(8000);
+    middleIntakeMotor.move_voltage(6000);
+    topIntakeMotor.move_voltage(-3800);
+}
+
 void Intake::intakeOutAutonSlow() {
    /* moveBottomIntake(-10);
     moveMiddleIntake(-150);
@@ -133,15 +160,21 @@ void Intake::intakeOutAutonSlow() {
 }
 
 void Intake::intakeOutSkills() {
-    bottomIntakeMotor.move_voltage(4500);
-    middleIntakeMotor.move_voltage(4000);
-    topIntakeMotor.move_voltage(-3000);
+    bottomIntakeMotor.move_voltage(5000);
+    middleIntakeMotor.move_voltage(5000);
+    topIntakeMotor.move_voltage(-3100);
+}
+
+void Intake::skillsMiddleGoalDriver() {
+    bottomIntakeMotor.move_voltage(5000);
+    middleIntakeMotor.move_voltage(4600);
+    topIntakeMotor.move_voltage(-2700);
 }
 
 void Intake::intakeOutSkillsSlow() {
-    bottomIntakeMotor.move_voltage(4000);
-    middleIntakeMotor.move_voltage(4500);
-    topIntakeMotor.move_voltage(-2600);
+    bottomIntakeMotor.move_voltage(5000);
+    middleIntakeMotor.move_voltage(7000);
+    topIntakeMotor.move_voltage(-3000);
 }
 
 
