@@ -9,7 +9,7 @@
 
 void odomTest() {
     //intake.setHold();
-    intakeLift.intakeLiftV(1);
+    /*intakeLift.intakeLiftV(1);
     intake.outtakeAutonSkills();
     pros::delay(1250);
     intake.outtakeAutonSkillsTop();
@@ -18,9 +18,10 @@ void odomTest() {
     pros::delay(600);
     chassis.setDrive(0,0);
     intake.stopIntake();
-    //chassis.setPose(48, 43.95, 180);
+    */
+    chassis.setPose(48, 43.95, 180);
 
-    /*
+    
     chassis.resetPositionLeft();
     chassis.resetPositionFront();
 /*
@@ -480,7 +481,7 @@ void leftSevenLong() {
     chassis.waitUntilDone();
     intake.intakePneumaticV(0);
     chassis.setDrive(-12000, -12000);
-    */ 
+    */
 }
 
 void leftSevenLongWing() {

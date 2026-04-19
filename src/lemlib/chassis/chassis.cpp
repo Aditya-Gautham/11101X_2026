@@ -201,20 +201,23 @@ void lemlib::Chassis::setBrakeMode(pros::motor_brake_mode_e mode) {
     drivetrain.rightMotors->set_brake_mode_all(mode);
 }
 
+// Distance sensor reset logic
 const float field_half_size = 70.25;
-constexpr double FIELD_HALF = 70.25;
-constexpr double RESET_MAX_JUMP = 12.0;
-constexpr double RESET_ANGLE_TOL = 8.0 * M_PI / 180.0;
+constexpr double FIELD_HALF = 70.25; // same constant, different meaning of origin
 
 void lemlib::Chassis::resetPositionWithSensor(pros::Distance* sensor, 
     double sensor_offset, double sensor_angle_offset) {
     if (sensor == nullptr) return;
     
+    // 1. SAFE READ FILTERING
     int rawMm = sensor->get_distance();
+    // Reject error codes (0), out of range (9999), or values over 2000mm
     if (rawMm <= 30 || rawMm > 2000) return; 
 
     double sensorReading = rawMm / 25.4;
+    
 
+    // 2. Get current pose and normalize heading
     Pose pose = this->getPose(); 
     double headingRad = pose.theta * (M_PI / 180.0);
     double sensorAngleRad = sensor_angle_offset * (M_PI / 180.0);
@@ -223,53 +226,51 @@ void lemlib::Chassis::resetPositionWithSensor(pros::Distance* sensor,
     double normalizedAngle = fmod(totalAngleRad, 2 * M_PI);
     if (normalizedAngle < 0) normalizedAngle += 2 * M_PI;
 
+    // 3. Determine target wall 
     bool resettingX = false;
+    double wallCoordinate = 0;
     double targetWallAngleRad = 0;
 
     if (normalizedAngle > M_PI_4 && normalizedAngle <= 3 * M_PI_4) {
-        targetWallAngleRad = M_PI_2; // East wall
+        targetWallAngleRad = M_PI_2; // East Wall
         resettingX = true;
+        wallCoordinate = field_half_size;
     } else if (normalizedAngle > 3 * M_PI_4 && normalizedAngle <= 5 * M_PI_4) {
-        targetWallAngleRad = M_PI; // South wall
+        targetWallAngleRad = M_PI;   // South Wall
         resettingX = false;
+        wallCoordinate = -field_half_size;
     } else if (normalizedAngle > 5 * M_PI_4 && normalizedAngle <= 7 * M_PI_4) {
-        targetWallAngleRad = 3 * M_PI_2; // West wall
+        targetWallAngleRad = 3 * M_PI_2; // West Wall
         resettingX = true;
+        wallCoordinate = -field_half_size;
     } else {
-        targetWallAngleRad = 0; // North wall
+        targetWallAngleRad = 0;      // North Wall
         resettingX = false;
+        wallCoordinate = field_half_size;
     }
 
+    // 4. THE 8-DEGREE GUARD
     double angleDiff = fabs(normalizedAngle - targetWallAngleRad);
     if (angleDiff > M_PI) angleDiff = 2 * M_PI - angleDiff;
-    if (angleDiff > RESET_ANGLE_TOL) return; 
+    if (angleDiff > (8.0 * M_PI / 180.0)) return; 
 
+    // 5. COSINE CORRECTION
     double correctedDist = (sensorReading * cos(angleDiff)) + sensor_offset;
+    
+    // 6. AREA VALIDATION (Sanity Check)
+    double calculatedPos = wallCoordinate - (correctedDist * (wallCoordinate > 0 ? 1 : -1));
+    double currentPos = resettingX ? pose.x : pose.y;
 
+    // Reject if the sensor data suggests a jump larger than 12 inches
+    //if (fabs(calculatedPos - currentPos) > 12.0) return;
+
+    // 7. Apply to LemLib Pose - AXIS ISOLATED
     if (resettingX) {
-        double newX;
-        if (targetWallAngleRad == M_PI_2) {
-            // East wall at +70.25
-            newX = field_half_size - correctedDist;
-        } else {
-            // West wall at -70.25
-            newX = -field_half_size + correctedDist;
-        }
-
-        if (fabs(newX - pose.x) > RESET_MAX_JUMP) return;
-        this->setPose(newX, pose.y, pose.theta);
+        // Update X, keep Y exactly as it was
+        this->setPose(calculatedPos, pose.y, pose.theta);
     } else {
-        double newY;
-        if (targetWallAngleRad == 0) {
-            // North wall at y = 140.5
-            newY = (2.0 * field_half_size) - correctedDist;
-        } else {
-            // South wall at y = 0
-            newY = correctedDist;
-        }
-
-        if (fabs(newY - pose.y) > RESET_MAX_JUMP) return;
-        this->setPose(pose.x, newY, pose.theta);
+        // Update Y, keep X exactly as it was
+        this->setPose(pose.x, calculatedPos, pose.theta);
     }
 }
 
@@ -298,53 +299,21 @@ void lemlib::Chassis::resetPositionFront() {
     double normalizedAngle = fmod(headingRad, 2 * M_PI);
     if (normalizedAngle < 0) normalizedAngle += 2 * M_PI;
 
-    double diff0 = fabs(normalizedAngle - 0.0);
-    if (diff0 > M_PI) diff0 = 2 * M_PI - diff0;
+    // ANGLE GUARD (±8° from 180°)
+    double targetAngleRad = M_PI;
+    double angleDiff = fabs(normalizedAngle - targetAngleRad);
+    if (angleDiff > M_PI) angleDiff = 2 * M_PI - angleDiff;
+    if (angleDiff > (8.0 * M_PI / 180.0)) return;
 
-    double diff90 = fabs(normalizedAngle - M_PI_2);
-    if (diff90 > M_PI) diff90 = 2 * M_PI - diff90;
+    // No cosine correction — sensor already reads perpendicular distance
+    double correctedDist = sensorReading + FRONT_SENSOR_OFFSET;
 
-    double diff180 = fabs(normalizedAngle - M_PI);
-    if (diff180 > M_PI) diff180 = 2 * M_PI - diff180;
-
-    double diff270 = fabs(normalizedAngle - 3 * M_PI_2);
-    if (diff270 > M_PI) diff270 = 2 * M_PI - diff270;
-
-    if (diff180 <= RESET_ANGLE_TOL) {
-        double correctedDist = sensorReading + FRONT_SENSOR_OFFSET;
-        double newY = correctedDist;
-        if (fabs(newY - pose.y) > RESET_MAX_JUMP) return;
-        this->setPose(pose.x, newY, pose.theta);
-        return;
-    }
-
-    if (diff0 <= RESET_ANGLE_TOL) {
-        double correctedDist = sensorReading + FRONT_SENSOR_OFFSET;
-        double newY = (2.0 * field_half_size) - correctedDist;
-        if (fabs(newY - pose.y) > RESET_MAX_JUMP) return;
-        this->setPose(pose.x, newY, pose.theta);
-        return;
-    }
-
-    if (diff90 <= RESET_ANGLE_TOL) {
-        double correctedDist = sensorReading + FRONT_SENSOR_OFFSET;
-        double newX = field_half_size - correctedDist;
-        if (fabs(newX - pose.x) > RESET_MAX_JUMP) return;
-        this->setPose(newX, pose.y, pose.theta);
-        return;
-    }
-
-    if (diff270 <= RESET_ANGLE_TOL) {
-        double correctedDist = sensorReading + FRONT_SENSOR_OFFSET;
-        double newX = -field_half_size + correctedDist;
-        if (fabs(newX - pose.x) > RESET_MAX_JUMP) return;
-        this->setPose(newX, pose.y, pose.theta);
-        return;
-    }
+    //if (fabs(correctedDist - pose.y) > 12.0) return; // optional sanity check
+    this->setPose(pose.x, correctedDist, pose.theta);
 }
 
 double lemlib::Chassis::getFrontDistance() {
-    return sensors.distanceFront->get_distance();
+    return sensors.distanceFront->get_distance(); // Read front sensor to determine distance to front wall
 }
 
 //skills functions

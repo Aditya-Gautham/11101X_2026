@@ -233,7 +233,7 @@ void autonomous() {
 
     if (runAuton)
     {
-    //odomTest();
+    odomTest();
     //leftFourLongFourMiddle();
     //leftFourLongFourMiddleWing();
     //leftFourLong();
