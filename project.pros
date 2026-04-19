@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "leftSeven",
+    "project_name": "rightSplit",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -592,9 +592,9 @@
       }
     },
     "upload_options": {
-      "description": "leftSeven",
-      "icon": "pizza",
-      "slot": 2,
+      "description": "rightSplit",
+      "icon": "planet",
+      "slot": 3,
       "after": "screen"
     },
     "use_early_access": false

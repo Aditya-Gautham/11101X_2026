@@ -103,9 +103,15 @@ void Intake::middleGoalSplit() {
 }
 
 void Intake::longGoal() {
-    moveBottomIntake(600);
-    moveMiddleIntake(600);
-    moveTopIntake(600);
+    bottomIntakeMotor.move_voltage(12000);
+    middleIntakeMotor.move_voltage(12000);
+    topIntakeMotor.move_voltage(12000);
+}
+
+void Intake::longGoalDriverSkills() {
+    bottomIntakeMotor.move_voltage(12000);
+    middleIntakeMotor.move_voltage(12000);
+    topIntakeMotor.move_voltage(11500);
 }
 
 void Intake::stopIntake() {
@@ -144,7 +150,7 @@ void Intake::intakeOutAuton() {
 void Intake::intakeOutAutonSWP() {
     bottomIntakeMotor.move_voltage(8000);
     middleIntakeMotor.move_voltage(6000);
-    topIntakeMotor.move_voltage(-3800);
+    topIntakeMotor.move_voltage(-3600);
 }
 
 void Intake::intakeOutAutonSlow() {

@@ -43,6 +43,8 @@ class Intake {
         void outtakeAuton();
 
         void skillsMiddleGoalDriver();
+
+        void longGoalDriverSkills();
         
         void intakeOutSkills();
 

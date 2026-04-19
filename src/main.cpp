@@ -239,13 +239,15 @@ void autonomous() {
     //leftFourLong();
     //leftSevenLong();
     //leftSixLongThreeMiddle();
-    //rightFourLongThreeLow();
+    //leftSevenLongWing();
+    rightFourLongThreeLow();
     //rightFourLong();
     //rightSixLong();
     //rightSevenLong();
     //rightNineLong();
     //rightSixLongThreeLow();
     //rightThreeGoal();
+    //rightSevenLongWing();
     //soloWinPoint();
     //skills();
     }
@@ -279,6 +281,7 @@ void opcontrol() {
             }
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+            intake.intakePneumaticV(1);
             intake.middleGoal();
         }
 /*
@@ -358,6 +361,7 @@ void opcontrol() {
 
             prevL1 = curL1;
         }
+
         
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1))
         {
@@ -365,10 +369,10 @@ void opcontrol() {
             intakeLift.intakeLiftV(0);
             intake.hoard();
         }
-        //else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y))
-        //{
-        //    intake.intakeOutSkills();
-        //}
+        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y))
+        {
+            intake.outtake();
+        }
         else {
             intake.stopIntake();
             // reset state and prev flags when no button is held

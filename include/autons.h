@@ -9,15 +9,21 @@ void leftFourLongFourMiddleWing();
 void leftFourLong();
 void leftSixLong();
 void leftSevenLong();
+void leftSevenLongWing();
 void leftSixLongThreeMiddle();
+void leftSplitDifferentSetup();
 void rightFourLongThreeLow();
+void rightSplitDifferentSetup();
 void rightFourLong();
 void rightSixLong();
 void rightSevenLong();
+void rightSevenLongWing();
 void rightNineLong();
 void rightSixLongThreeLow();
-void rightThreeGoal();
+void halfSWPRight();
+void halfSWPLeft();
 void soloWinPoint();
+
 
 
 //skills
