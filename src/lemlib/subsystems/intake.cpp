@@ -46,9 +46,9 @@ void Intake::outtakeSkills() {
     //moveBottomIntake(-600);
     //moveMiddleIntake(-600);
     //moveTopIntake(-600);
-    bottomIntakeMotor.move_voltage(-3000);
+    bottomIntakeMotor.move_voltage(-3400);
     middleIntakeMotor.move_voltage(-5000);
-    topIntakeMotor.move_voltage(-4000);
+    topIntakeMotor.move_voltage(-5500);
 }
 
 void Intake::outtake() {
@@ -67,8 +67,8 @@ void Intake::outtakeAuton() {
 }
 
 void Intake::outtakeAutonSkills() {
-    bottomIntakeMotor.move_voltage(-6000);
-    middleIntakeMotor.move_voltage(-8000);
+    bottomIntakeMotor.move_voltage(-4500);
+    middleIntakeMotor.move_voltage(-6000);
     //topIntakeMotor.move_voltage(-12000);
 }
 
@@ -79,9 +79,9 @@ void Intake::outtakeAutonSkillsSlow() {
 }
 
 void Intake::outtakeAutonSkillsTop() {
-    bottomIntakeMotor.move_voltage(-6000);
-    middleIntakeMotor.move_voltage(-7000);
-    topIntakeMotor.move_voltage(-7000);
+    bottomIntakeMotor.move_voltage(-4500);
+    middleIntakeMotor.move_voltage(-6000);
+    topIntakeMotor.move_voltage(-6000);
 }
 
 void Intake::intakeOutSkills2() {
@@ -149,7 +149,7 @@ void Intake::intakeOutAuton() {
 
 void Intake::intakeOutAutonSWP() {
     bottomIntakeMotor.move_voltage(8000);
-    middleIntakeMotor.move_voltage(6000);
+    middleIntakeMotor.move_voltage(9500);
     topIntakeMotor.move_voltage(-3600);
 }
 
@@ -167,20 +167,20 @@ void Intake::intakeOutAutonSlow() {
 
 void Intake::intakeOutSkills() {
     bottomIntakeMotor.move_voltage(5000);
-    middleIntakeMotor.move_voltage(5000);
-    topIntakeMotor.move_voltage(-3100);
+    middleIntakeMotor.move_voltage(6000);
+    topIntakeMotor.move_voltage(-3500);
 }
 
 void Intake::skillsMiddleGoalDriver() {
     bottomIntakeMotor.move_voltage(5000);
-    middleIntakeMotor.move_voltage(4600);
-    topIntakeMotor.move_voltage(-2700);
+    middleIntakeMotor.move_voltage(6000);
+    topIntakeMotor.move_voltage(-3000);
 }
 
 void Intake::intakeOutSkillsSlow() {
     bottomIntakeMotor.move_voltage(5000);
-    middleIntakeMotor.move_voltage(7000);
-    topIntakeMotor.move_voltage(-3000);
+    middleIntakeMotor.move_voltage(5000);
+    topIntakeMotor.move_voltage(-2300);
 }
 
 

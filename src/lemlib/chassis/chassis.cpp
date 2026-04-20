@@ -326,9 +326,9 @@ void lemlib::Chassis::wiggle(double times, double velocity) {
   int i = 0;
   while (times >= i) {
     setDrive(velocity, -velocity);
-    pros::delay(400);
+    pros::delay(200);
     setDrive(-velocity, velocity);
-    pros::delay(400);
+    pros::delay(200);
     i++;
   }
   setDrive(0, 0);

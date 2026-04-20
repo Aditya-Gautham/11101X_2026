@@ -31,9 +31,9 @@ pros::Rotation horizontalEnc(-14);
 // vertical tracking wheel encoder. Rotation sensor, port 11, reversed
 pros::Rotation verticalEnc(-17);
 // horizontal tracking wheel. 2.75" diameter, 5.75" offset, back of the robot (negative)
-lemlib::TrackingWheel horizontal(&horizontalEnc, 1.99, -3.25);
+lemlib::TrackingWheel horizontal(&horizontalEnc, 1.99, -3.5);
 // vertical tracking wheel. 2.75" diameter, 2.5" offset, left of the robot (negative)
-lemlib::TrackingWheel vertical(&verticalEnc, 1.99, -0.375);
+lemlib::TrackingWheel vertical(&verticalEnc, 1.99, -0.95);
 
 pros::Distance distanceLeft(20);
 pros::Distance distanceRight(8);
@@ -41,7 +41,7 @@ pros::Distance distanceFront(9);
 
 lemlib::Drivetrain drivetrain(&leftMotors,
                             &rightMotors,
-                              10.325, // 11.05 inch track width
+                              11.3, // 11.05 inch track width
                               lemlib::Omniwheel::OLD_325, // using old 3.25" omnis
                               450, // drivetrain rpm is 450
                               2 // horizontal drift is 2. If we had traction wheels, it would have been 8
@@ -233,7 +233,7 @@ void autonomous() {
 
     if (runAuton)
     {
-    odomTest();
+    //odomTest();
     //leftFourLongFourMiddle();
     //leftFourLongFourMiddleWing();
     //leftFourLong();
@@ -247,8 +247,8 @@ void autonomous() {
     //rightNineLong();
     //rightSixLongThreeLow();
     //rightThreeGoal();
-    rightSevenLongWing();
-    //soloWinPoint();
+    //rightSevenLongWing();
+    soloWinPoint();
     //skills();
     }
 }
@@ -281,11 +281,18 @@ void opcontrol() {
             }
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+            if (skillsFlag) {
+                intake.intakePneumaticV(1);
+                intake.skillsMiddleGoalDriver();
+            }
+            else
+            {
             intake.intakePneumaticV(1);
             intake.middleGoal();
+            }
         }
-/*
-       else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) ||
+
+/*       else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) ||
                 controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2))
         {
             bool curL1 = controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1);
@@ -334,6 +341,7 @@ void opcontrol() {
             prevR2 = curR2;
         }
 */
+
         // handle holds on either L1 or R2 with non-blocking timer
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1))
         {
@@ -352,13 +360,17 @@ void opcontrol() {
                     }
                 }
                 if (holdState == IH_Intake) {
-                        intake.intakePneumaticV(1);
-                        intakeLift.intakeLiftV(0);
+                    intake.intakePneumaticV(1);
+                    intakeLift.intakeLiftV(0);
+                    if (skillsFlag) {
+                        intake.longGoalDriverSkills();
+                    }
+                    else
+                    {
                         intake.longGoal();
+                    }
                 }
             }
-            
-
             prevL1 = curL1;
         }
 
