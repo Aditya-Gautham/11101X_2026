@@ -60,6 +60,15 @@ void Intake::outtake() {
     topIntakeMotor.move_voltage(-12000);
 }
 
+void Intake::outtakeForSkillsMiddleGoal() {
+    //moveBottomIntake(-600);
+    //moveMiddleIntake(-600);
+    //moveTopIntake(-600);
+    bottomIntakeMotor.move_voltage(-7500);
+    middleIntakeMotor.move_voltage(-12000);
+    topIntakeMotor.move_voltage(-12000);
+}
+
 void Intake::outtakeAuton() {
     bottomIntakeMotor.move_voltage(-5000);
     middleIntakeMotor.move_voltage(-7000);
@@ -149,8 +158,8 @@ void Intake::intakeOutAuton() {
 
 void Intake::intakeOutAutonSWP() {
     bottomIntakeMotor.move_voltage(8000);
-    middleIntakeMotor.move_voltage(9500);
-    topIntakeMotor.move_voltage(-3600);
+    middleIntakeMotor.move_voltage(8000);
+    topIntakeMotor.move_voltage(-3800);
 }
 
 void Intake::intakeOutAutonSlow() {
@@ -167,8 +176,8 @@ void Intake::intakeOutAutonSlow() {
 
 void Intake::intakeOutSkills() {
     bottomIntakeMotor.move_voltage(5000);
-    middleIntakeMotor.move_voltage(6000);
-    topIntakeMotor.move_voltage(-3500);
+    middleIntakeMotor.move_voltage(5500);
+    topIntakeMotor.move_voltage(-3450);
 }
 
 void Intake::skillsMiddleGoalDriver() {
@@ -179,8 +188,14 @@ void Intake::skillsMiddleGoalDriver() {
 
 void Intake::intakeOutSkillsSlow() {
     bottomIntakeMotor.move_voltage(5000);
-    middleIntakeMotor.move_voltage(5000);
+    middleIntakeMotor.move_voltage(4500);
     topIntakeMotor.move_voltage(-2300);
+}
+
+void Intake::intakeOutSkillsSuperSlow() {
+    bottomIntakeMotor.move_voltage(5000);
+    middleIntakeMotor.move_voltage(4500);
+    topIntakeMotor.move_voltage(-2200);
 }
 
 
