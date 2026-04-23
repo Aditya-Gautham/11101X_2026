@@ -954,6 +954,7 @@ class Chassis {
         pros::Distance* fallback, double fallback_offset, double fallback_angle_offset);
         void resetPositionLeftFirst();
         void resetPositionRightFirst();
+        void gyroParkZone();
         
         // The master logic function used by the wrappers above
         void resetPositionWithSensor(pros::Distance* sensor, double sensor_offset, double sensor_angle_offset);

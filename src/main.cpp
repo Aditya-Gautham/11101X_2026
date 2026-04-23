@@ -233,23 +233,23 @@ void autonomous() {
 
     if (runAuton)
     {
-    //odomTest();
-    //leftFourLongFourMiddle();
-    //leftFourLongFourMiddleWing();
-    //leftFourLong();
-    //leftSevenLong();
-    //leftSixLongThreeMiddle();
-    //leftSevenLongWing();
-    //rightFourLongThreeLow();
-    //rightFourLong();
-    //rightSixLong();
-    //rightSevenLong();
-    //rightNineLong();
-    //rightSixLongThreeLow();
-    //rightThreeGoal();
-    //rightSevenLongWing();
-    soloWinPoint();
-    //skills();
+        //odomTest();
+        //leftFourLongFourMiddle();
+        //leftFourLongFourMiddleWing();
+        //leftFourLong();
+        //leftSevenLong();
+        //leftSevenLongWing();
+        //leftSixLongThreeMiddle();
+        rightFourLongThreeLow();
+        //rightFourLong();
+        //rightSixLong();
+        //rightSevenLong();
+        //rightSevenLongWing();
+        //rightNineLong();
+        //rightSixLongThreeLow();
+        //rightThreeGoal();
+        //soloWinPoint();
+        //skills();
     }
 }
 

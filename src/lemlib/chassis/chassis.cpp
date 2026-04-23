@@ -563,3 +563,14 @@ void lemlib::Chassis::resetPositionFrontSkills() {
 void lemlib::Chassis::resetPositionFrontAlways() {
     resetPositionWithSensorAlways(sensors.distanceFront, FRONT_SENSOR_OFFSET, 0.0);
 }
+
+void lemlib::Chassis::gyroParkZone() {
+    int timer = 0;
+    sensors.imu->reset();
+    setDrive(6000, 6000);
+    while (sensors.imu->get_roll() > -5 || timer > 1000) {
+        timer += 10;
+        pros::delay(10);
+    }
+    setDrive(4000, 4000);
+}
