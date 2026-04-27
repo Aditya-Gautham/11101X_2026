@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "rightSplit",
+    "project_name": "null",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -592,9 +592,9 @@
       }
     },
     "upload_options": {
-      "description": "rightSplit",
+      "description": "null",
       "icon": "ufo",
-      "slot": 4,
+      "slot": 8,
       "after": "screen"
     },
     "use_early_access": false

@@ -400,50 +400,50 @@ void leftFourLongFourMiddle() {
 
 void leftFourLongFourMiddleWing() {
     chassis.setPose(-16.875, 20, 270);
-    chassis.moveToPoint(-47.2, 20, 1500, {.minSpeed = 20, .earlyExitRange = 2});
+    chassis.moveToPoint(-45.25, 20, 1500, {.minSpeed = 40, .earlyExitRange = 4});
     matchload.matchloadV(1);
-    chassis.turnToPoint(-47.8, 11.75, 1500, {.minSpeed = 20, .earlyExitRange = 2});
+    chassis.turnToPoint(-47.8, 11.75, 1500, {.minSpeed = 30, .earlyExitRange = 4});
     intake.hoard();
     //matchload #1
-    chassis.moveToPoint(-47.8, 11.75, 800, {.minSpeed = 50, .clampDistance = false});
-    pros::delay(800);
+    chassis.moveToPoint(-47.8, 11.75, 770, {.minSpeed = 50, .clampDistance = false});
+    pros::delay(770);
     chassis.resetPositionRight();
     chassis.resetPositionFront();
     //long goal #1
-    chassis.moveToPoint(-48, 43.95, 1900, {.forwards = false, .minSpeed = 50, .clampDistance = false});
-    chassis.waitUntil(22.5);
+    chassis.moveToPoint(-48, 43.95, 1600, {.forwards = false, .minSpeed = 90, .clampDistance = false});
+    chassis.waitUntil(20);
     intake.intakePneumaticV(1);
     matchload.matchloadV(0);
     intake.longGoal();
-    pros::delay(900);
+    pros::delay(825);
     chassis.resetPositionRight();
     chassis.resetPositionFront();
     intake.stopIntake();
     //grab three stack
-    chassis.turnToPoint(-23.5, 48.25, 850, {.maxSpeed = 85});
-    chassis.moveToPoint(-23.5, 48.25, 2000, {.minSpeed = 35, .earlyExitRange = 3, .pidSelector = 1});
+    chassis.turnToPoint(-22.75, 47.5, 575);
+    chassis.moveToPoint(-22.75, 47.5, 2000, {.minSpeed = 35, .earlyExitRange = 3, .pidSelector = 1});
     intake.intakePneumaticV(0);
     intake.hoard();
-    chassis.waitUntil(3.25);
-    matchload.matchloadV(1);
+    //chassis.waitUntil(3.25);
+    //matchload.matchloadV(1);
     //score middle goal
-    chassis.turnToPoint(-11, 60.75, 2000, {.forwards = false, .minSpeed = 20, .earlyExitRange = 3, .pidSelector = 2});
-    chassis.moveToPoint(-11, 60.75, 2000, {.forwards = false, .minSpeed = 55, .clampDistance = false});
+    chassis.turnToPoint(-11, 60, 2000, {.forwards = false, .minSpeed = 20, .earlyExitRange = 3, .pidSelector = 2});
+    chassis.moveToPoint(-11, 60, 2000, {.forwards = false, .minSpeed = 50, .clampDistance = false});
     matchload.matchloadV(0);
     //intake.moveBottomIntake(-50);
     intake.moveMiddleIntake(-250);
     intake.moveTopIntake(-350);
-    pros::delay(250);
+    pros::delay(225);
     intake.stopIntake();
-    pros::delay(425);
+    pros::delay(300);
     intake.middleGoalSplit();
-    pros::delay(1200);
+    pros::delay(950);
     //wing long goal
-    chassis.moveToPoint(-33.25, 34, 1500, {.minSpeed = 40, .earlyExitRange = 3});
-    chassis.turnToPoint(-34.75, 56, 2000, {.forwards = false, .minSpeed = 5, .earlyExitRange = 3, .shortTurn = true});
+    chassis.moveToPoint(-33.5, 34, 1500, {.minSpeed = 40, .earlyExitRange = 3});
+    chassis.turnToPoint(-33.5, 56, 2000, {.forwards = false, .minSpeed = 35, .earlyExitRange = 3, .shortTurn = true});
     intake.stopIntake();
-    chassis.moveToPoint(-36.5, 56, 1500, {.forwards = false, .minSpeed = 40, .earlyExitRange = 2});
-    chassis.turnToHeading(210, 15000, {.minSpeed = 30});
+    chassis.moveToPoint(-36.5, 56, 6500, {.forwards = false, .minSpeed = 50, .earlyExitRange = 2});
+    chassis.turnToHeading(210, 15000, {.minSpeed = 60});
 }
 
 void leftSixLongSixThreeMiddle() {
@@ -683,18 +683,18 @@ void rightFourLongThreeLow() {
     //chassis.resetPositionFront();
     //chassis.resetPositionRight();
     //pros::delay(10);
-    chassis.moveToPoint(45, 20, 1500, {.minSpeed = 45, .earlyExitRange = 4});
+    chassis.moveToPoint(45.25, 20, 1500, {.minSpeed = 40, .earlyExitRange = 4});
     matchload.matchloadV(1);
     chassis.turnToPoint(47.8, 11.75, 1500, {.minSpeed = 30, .earlyExitRange = 4});
     intake.hoard();
     //matchload #1
-    chassis.moveToPoint(47.8, 11.75, 790, {.minSpeed = 55, .clampDistance = false});
-    pros::delay(790);
+    chassis.moveToPoint(47.8, 11.75, 780, {.minSpeed = 50, .clampDistance = false});
+    pros::delay(780);
     chassis.resetPositionLeft();
     chassis.resetPositionFront();
     //long goal #1
-    chassis.moveToPoint(48, 43.95, 1600, {.forwards = false, .minSpeed = 127, .clampDistance = false});
-    chassis.waitUntil(17);
+    chassis.moveToPoint(48, 43.95, 1600, {.forwards = false, .minSpeed = 90, .clampDistance = false});
+    chassis.waitUntil(19);
     intake.intakePneumaticV(1);
     matchload.matchloadV(0);
     intake.longGoal();
@@ -703,30 +703,30 @@ void rightFourLongThreeLow() {
     chassis.resetPositionFront();
     intake.stopIntake();
     //grab 3 stack
-    chassis.turnToPoint(23.5, 48, 575);
-    chassis.moveToPoint(23.5, 48, 2000, {.minSpeed = 50, .earlyExitRange = 4, .pidSelector = 1});
+    chassis.turnToPoint(22.75, 47.5, 575);
+    intake.moveBottomIntakeVoltage(12000);
+    chassis.moveToPoint(22.75, 47.5, 2000, {.minSpeed = 15, .earlyExitRange = 4, .pidSelector = 1});
     intake.intakePneumaticV(0);
-    intake.moveBottomIntake(600);
     //chassis.waitUntil(3.25);
     //matchload.matchloadV(1);
     //score low goal
-    //chassis.turnToPoint(11.5, 59, 2000, {.minSpeed = 15, .earlyExitRange = 3, .shortTurn = true});
-    chassis.moveToPoint(11.5, 59, 1800, {.minSpeed = 35, .pidSelector = 1});
-    //matchload.matchloadV(0);
+    chassis.turnToPoint(11.5, 59, 2000, {.minSpeed = 15, .earlyExitRange = 3, .shortTurn = true});
+    chassis.moveToPoint(11.5, 59, 1800, {.minSpeed = 20});
     intake.stopIntake();
-    pros::delay(250);
+    pros::delay(400);
+    //matchload.matchloadV(0);
     intakeLift.intakeLiftV(1);
-    pros::delay(200);
+    pros::delay(150);
     intake.outtakeAuton();
-    pros::delay(1200);
+    pros::delay(1250);
     //wing long goal
     chassis.moveToPoint(31.5, 34, 1500, {.forwards = false, .minSpeed = 50, .earlyExitRange = 3});
     intakeLift.intakeLiftV(0);
-    intake.moveBottomIntake(-30);
-    chassis.turnToPoint(34, 56.25, 2000, {.minSpeed = 40, .earlyExitRange = 5, .shortTurn = true});
+    intake.moveBottomIntakeVoltage(-30);
+    chassis.turnToPoint(30, 56, 2000, {.minSpeed = 35, .earlyExitRange = 5, .shortTurn = true});
+    chassis.moveToPoint(35.25, 56, 15000, {.minSpeed = 60, .earlyExitRange = 2, .clampDistance = false});
     intake.stopIntake();
-    chassis.moveToPoint(35.25, 56.25, 15000, {.minSpeed = 90, .earlyExitRange = 2, .clampDistance = false});
-    chassis.turnToHeading(325, 15000, {.minSpeed = 90});
+    chassis.turnToHeading(325, 15000, {.minSpeed = 70});
 }
 
 void rightSixLongThreeLow() {
@@ -784,16 +784,140 @@ void rightSixLongThreeLow() {
     chassis.turnToHeading(325, 15000, {.minSpeed = 60});
 }
 
+void rightSplitDifferentSetup() {
+    chassis.setPose(15.5, 23, 12.4);
+    intake.hoard();
+    chassis.moveToPoint(23.5, 46.5, 2000, {.minSpeed = 95, .earlyExitRange = 5});
+    chassis.waitUntil(11);
+    matchload.matchloadV(1);
+    chassis.turnToPoint(44, 37.5, 2000, {.minSpeed = 20, .earlyExitRange = 3});
+    chassis.moveToPoint(44, 37.5, 2000, {.minSpeed = 60, .earlyExitRange = 3, .clampDistance = false});
+    chassis.turnToPoint(48, 44, 800, {.forwards = false, .minSpeed = 25, .earlyExitRange = 3, .shortTurn = true});
+    chassis.moveToPoint(48, 44, 1500, {.forwards = false, .minSpeed = 90, .clampDistance = false});
+    chassis.waitUntil(7.25);
+    intake.intakePneumaticV(1);
+    intake.longGoal();
+    pros::delay(400);
+    chassis.resetPositionLeft();
+    chassis.resetPositionFront();
+     chassis.turnToPoint(47.75, 9.5, 500, {.minSpeed = 15, .earlyExitRange = 3, .shortTurn = true});
+    pros::delay(500);
+    //matchload #2
+    chassis.moveToPoint(47.75, 9.5, 1425, {.minSpeed = 15, .clampDistance = false});
+    intake.stopIntake();
+    intake.moveBottomIntakeVoltage(12000);
+    pros::delay(500);
+    intake.intakePneumaticV(0);
+    pros::delay(925);
+    chassis.resetPositionLeft();
+    chassis.resetPositionFront();
+    chassis.moveToPoint(47.75, 24, 2000, {.forwards = false, .minSpeed = 40, .earlyExitRange = 2});
+    chassis.turnToPoint(11.5, 59, 800, {.minSpeed = 10, .earlyExitRange = 2, .pidSelector = 2});
+    //middle goal
+    chassis.moveToPoint(11.5, 59, 1700, {.minSpeed = 15});
+    matchload.matchloadV(0);
+    chassis.waitUntil(34);
+    intakeLift.intakeLiftV(1);
+    intake.outtakeAuton();
+    pros::delay(1200);
+    chassis.moveToPoint(31.25, 34, 1500, {.forwards = false, .minSpeed = 50, .earlyExitRange = 3});
+    intakeLift.intakeLiftV(0);
+    intake.moveBottomIntakeVoltage(-30);
+    chassis.turnToPoint(30, 57, 2000, {.minSpeed = 35, .earlyExitRange = 5, .shortTurn = true});
+    chassis.moveToPoint(35.25, 57, 15000, {.minSpeed = 80, .earlyExitRange = 2, .clampDistance = false});
+    intake.stopIntake();
+    chassis.turnToHeading(325, 15000, {.minSpeed = 90});
+
+}
+
+void rightSplitSevenSetup() {
+    chassis.setPose(15.5, 23, 12.4);
+    intake.hoard();
+    chassis.moveToPoint(23.5, 46.5, 2000, {.minSpeed = 95, .earlyExitRange = 5});
+    chassis.waitUntil(11);
+    matchload.matchloadV(1);
+    //grab 3 stack
+    //chassis.turnToPoint(45, 23, 2000, {.minSpeed = 10});
+    //chassis.moveToPoint(45, 23, 2000, {.minSpeed = 40, .earlyExitRange = 5});
+    chassis.moveToPoint(47.5, 23, 2000, {.minSpeed = 40, .earlyExitRange = 5, .pidSelector = 1});
+    chassis.turnToPoint(47.75, 11.75, 800, {.minSpeed = 5, .earlyExitRange = 3, .shortTurn = true});
+    //matchload #1
+    chassis.moveToPoint(47.75, 11.75, 900, {.minSpeed = 50, .pidSelector = 1, .clampDistance = false});
+    intake.stopIntake();
+    intake.moveBottomIntakeVoltage(12000);
+    pros::delay(900);
+    chassis.resetPositionLeft();
+    chassis.resetPositionFront();
+   //long goal #1
+    chassis.moveToPoint(48, 44, 1500, {.forwards = false, .minSpeed = 60, .clampDistance = false});
+    chassis.waitUntil(17);
+    intake.moveTopIntake(-300);
+    intake.moveMiddleIntake(-300);
+    intake.moveBottomIntake(-300);
+    pros::delay(200);
+    intake.intakePneumaticV(1);
+    intake.moveMiddleIntake(600);
+    intake.moveTopIntake(600);
+    pros::delay(750);
+    chassis.resetPositionLeft();
+    chassis.resetPositionFront();
+    matchload.matchloadV(0);
+    intake.stopIntake();
+    intake.intakePneumaticV(0);
+    pros::delay(100);
+    chassis.turnToPoint(11.75, 58.5, 675);
+    intake.moveBottomIntakeVoltage(12000);
+    chassis.moveToPoint(11.75, 58.5, 2000, {.minSpeed = 10, .earlyExitRange = 1, .pidSelector = 1});
+    intake.intakePneumaticV(0);
+    //chassis.waitUntil(3.25);
+    //matchload.matchloadV(1);
+    //score low goal
+    //chassis.turnToPoint(11.5, 59, 2000, {.minSpeed = 15, .earlyExitRange = 3, .shortTurn = true});
+    //chassis.moveToPoint(11.5, 59, 1800, {.minSpeed = 20});
+    chassis.turnToHeading(315, 1000, {.minSpeed = 5});
+    //matchload.matchloadV(0);
+    pros::delay(200);
+    intakeLift.intakeLiftV(1);
+    intake.outtakeAuton();
+    pros::delay(1250);
+    //wing long goal
+    chassis.moveToPoint(31, 34, 1500, {.forwards = false, .minSpeed = 50, .earlyExitRange = 3});
+    intakeLift.intakeLiftV(0);
+    intake.moveBottomIntakeVoltage(-30);
+    chassis.turnToPoint(30, 56, 2000, {.minSpeed = 35, .earlyExitRange = 5, .shortTurn = true});
+    chassis.moveToPoint(35.25, 56, 15000, {.minSpeed = 60, .earlyExitRange = 2, .clampDistance = false});
+    intake.stopIntake();
+    chassis.turnToHeading(325, 15000, {.minSpeed = 70});
+
+}
+
 void rightFourLong() {
     chassis.setPose(15.5, 23, 12.4);
     intake.hoard();
-    chassis.moveToPoint(23.5, 46.5, 2000, {.minSpeed = 65, .earlyExitRange = 2});
+    chassis.moveToPoint(23.5, 46.5, 2000, {.minSpeed = 95, .earlyExitRange = 5});
     chassis.waitUntil(11);
     matchload.matchloadV(1);
-    chassis.turnToPoint(42, 44, 2000, {.forwards = false, .minSpeed = 15, .earlyExitRange = 3});
-    chassis.moveToPoint(42, 44, 2000, {.forwards = false, .minSpeed = 40, .earlyExitRange = 3, .clampDistance = false});
+    chassis.turnToPoint(44, 37.5, 2000, {.minSpeed = 20, .earlyExitRange = 3});
+    chassis.moveToPoint(44, 37.5, 2000, {.minSpeed = 60, .earlyExitRange = 3, .clampDistance = false});
+    chassis.turnToPoint(48, 44, 800, {.forwards = false, .minSpeed = 25, .earlyExitRange = 3, .shortTurn = true});
+    chassis.moveToPoint(48, 44, 1500, {.forwards = false, .minSpeed = 90, .clampDistance = false});
+    chassis.waitUntil(7.25);
+    intake.intakePneumaticV(1);
+    intake.longGoal();
+    pros::delay(900);
+    chassis.resetPositionLeft();
+    chassis.resetPositionFront();
+    matchload.matchloadV(0);
+    intake.stopIntake();
+    chassis.moveToPoint(58.75, 34, 1500, {.minSpeed = 65, .earlyExitRange = 2, .pidSelector = 1});
+    chassis.moveToPoint(58.25, 57, 1200, {.forwards = false, .minSpeed = 30, .earlyExitRange = 3, .pidSelector = 1,.clampDistance = false});
+    //intake.intakePneumaticV(1);
+    chassis.turnToHeading(210, 15000, {.minSpeed = 20});
+    /*chassis.turnToPoint(39.5, 40, 2000, {.forwards = false, .minSpeed = 15, .earlyExitRange = 3});
+    chassis.moveToPoint(39.5, 40, 2000, {.forwards = false, .minSpeed = 40, .earlyExitRange = 3, .clampDistance = false});
     chassis.swingToHeading(180, DriveSide::RIGHT, 1000, {.minSpeed = 50, .earlyExitRange = 2});
-    chassis.waitUntil(50);
+    */
+    /*chassis.waitUntil(50);
     intake.intakePneumaticV(1);
     intake.longGoal();
     pros::delay(1000);
@@ -806,7 +930,8 @@ void rightFourLong() {
     chassis.moveToPoint(59, 57, 1200, {.forwards = false, .minSpeed = 70, .earlyExitRange = 3, .pidSelector = 1,.clampDistance = false});
     intake.intakePneumaticV(1);
     chassis.turnToHeading(210, 15000, {.minSpeed = 50});
-    /*chassis.setPose(15.5, 23, 12.4);
+    
+    chassis.setPose(15.5, 23, 12.4);
     intake.hoard();
     chassis.moveToPoint(23.5, 46.5, 2000, {.minSpeed = 65, .earlyExitRange = 2});
     chassis.waitUntil(11);
@@ -877,12 +1002,13 @@ void rightSevenLong() {
     //grab 3 stack
     //chassis.turnToPoint(45, 23, 2000, {.minSpeed = 10});
     //chassis.moveToPoint(45, 23, 2000, {.minSpeed = 40, .earlyExitRange = 5});
-    chassis.moveToPoint(45, 23, 2000, {.minSpeed = 40, .earlyExitRange = 5, .pidSelector = 1});
+    chassis.moveToPoint(47.25, 23, 2000, {.minSpeed = 40, .earlyExitRange = 5, .pidSelector = 1});
+    chassis.turnToPoint(47.75, 11.75, 800, {.minSpeed = 5, .earlyExitRange = 3, .shortTurn = true});
     //chassis.turnToPoint(47.75, 11.75, 800, {.minSpeed = 5, .earlyExitRange = 3, .shortTurn = true});
     //matchload #1
-    chassis.moveToPoint(47.75, 11.75, 900, {.minSpeed = 50, .pidSelector = 1, .clampDistance = false});
+    chassis.moveToPoint(47.75, 11.75, 950, {.minSpeed = 50, .pidSelector = 1, .clampDistance = false});
     intake.hoard();
-    pros::delay(900);
+    pros::delay(950);
     chassis.resetPositionLeft();
     chassis.resetPositionFront();
    //long goal #1
@@ -900,10 +1026,11 @@ void rightSevenLong() {
     matchload.matchloadV(0);
     chassis.waitUntilDone();
     intake.intakePneumaticV(0);
-    chassis.moveToPoint(59, 36, 1500, {.minSpeed = 65, .earlyExitRange = 2, .pidSelector = 1});
+    /*chassis.moveToPoint(59, 36, 1500, {.minSpeed = 65, .earlyExitRange = 2, .pidSelector = 1});
     chassis.moveToPoint(58.5, 57, 1200, {.forwards = false, .minSpeed = 30, .earlyExitRange = 3, .pidSelector = 1,.clampDistance = false});
     //intake.intakePneumaticV(1);
     chassis.turnToHeading(210, 15000, {.minSpeed = 20});
+    */
 
     /*
     chassis.setPose(15.5, 23, 12.4);
@@ -947,7 +1074,7 @@ void rightSevenLong() {
     */
 }
 
-void rightSevenLongWing() {
+void rightSevenDelayedWing() {
     chassis.setPose(15.5, 23, 12.4);
     intake.hoard();
     chassis.moveToPoint(23.5, 46.5, 2000, {.minSpeed = 95, .earlyExitRange = 5});
@@ -956,12 +1083,12 @@ void rightSevenLongWing() {
     //grab 3 stack
     //chassis.turnToPoint(45, 23, 2000, {.minSpeed = 10});
     //chassis.moveToPoint(45, 23, 2000, {.minSpeed = 40, .earlyExitRange = 5});
-    chassis.moveToPoint(45, 23, 2000, {.minSpeed = 50, .earlyExitRange = 5, .pidSelector = 1});
-    //chassis.turnToPoint(47.75, 11.75, 800, {.minSpeed = 5, .earlyExitRange = 3, .shortTurn = true});
+    chassis.moveToPoint(47.25, 23, 2000, {.minSpeed = 40, .earlyExitRange = 5, .pidSelector = 1});
+    chassis.turnToPoint(47.75, 11.75, 800, {.minSpeed = 5, .earlyExitRange = 3, .shortTurn = true});
     //matchload #1
-    chassis.moveToPoint(47.75, 11.75, 660, {.minSpeed = 50, .pidSelector = 1, .clampDistance = false});
+    chassis.moveToPoint(47.75, 11.75, 900, {.minSpeed = 50, .clampDistance = false});
     intake.hoard();
-    pros::delay(660);
+    pros::delay(900);
     chassis.resetPositionLeft();
     chassis.resetPositionFront();
    //long goal #1
@@ -974,6 +1101,47 @@ void rightSevenLongWing() {
     intake.intakePneumaticV(1);
     intake.longGoal();
     pros::delay(1400);
+    chassis.resetPositionLeft();
+    chassis.resetPositionFront();
+    matchload.matchloadV(0);
+    chassis.waitUntilDone();
+    intake.intakePneumaticV(0);
+    chassis.moveToPoint(59.5, 34, 1500, {.minSpeed = 40, .earlyExitRange = 2, .pidSelector = 1});
+    chassis.moveToPoint(58, 51, 1200, {.forwards = false, .minSpeed = 10, .earlyExitRange = 3, .pidSelector = 1,.clampDistance = false});
+    //intake.intakePneumaticV(1);
+    //chassis.turnToHeading(210, 15000, {.minSpeed = 20});
+    pros::delay(7000);
+     chassis.moveToPoint(58, 57, 1200, {.forwards = false, .minSpeed = 50, .earlyExitRange = 3, .pidSelector = 1,.clampDistance = false});
+    chassis.turnToHeading(210, 15000, {.minSpeed = 50});
+}
+
+void rightSevenLongWing() {
+    chassis.setPose(15.5, 23, 12.4);
+    intake.hoard();
+    chassis.moveToPoint(23.5, 46.5, 2000, {.minSpeed = 95, .earlyExitRange = 5});
+    chassis.waitUntil(11);
+    matchload.matchloadV(1);
+    //grab 3 stack
+    //chassis.turnToPoint(45, 23, 2000, {.minSpeed = 10});
+    //chassis.moveToPoint(45, 23, 2000, {.minSpeed = 40, .earlyExitRange = 5});
+    chassis.moveToPoint(47.25, 23, 2000, {.minSpeed = 40, .earlyExitRange = 5, .pidSelector = 1});
+    chassis.turnToPoint(47.75, 11.75, 800, {.minSpeed = 5, .earlyExitRange = 3, .shortTurn = true});
+    //matchload #1
+    chassis.moveToPoint(47.75, 11.75, 900, {.minSpeed = 50, .pidSelector = 1, .clampDistance = false});
+    intake.hoard();
+    pros::delay(900);
+    chassis.resetPositionLeft();
+    chassis.resetPositionFront();
+   //long goal #1
+    chassis.moveToPoint(48, 44, 2000, {.forwards = false, .minSpeed = 80, .clampDistance = false});
+    chassis.waitUntil(14);
+    intake.moveTopIntake(-300);
+    intake.moveMiddleIntake(-300);
+    intake.moveBottomIntake(-300);
+    pros::delay(200);
+    intake.intakePneumaticV(1);
+    intake.longGoal();
+    pros::delay(1450);
     chassis.resetPositionLeft();
     chassis.resetPositionFront();
     matchload.matchloadV(0);

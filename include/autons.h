@@ -18,6 +18,8 @@ void rightFourLong();
 void rightSixLong();
 void rightSevenLong();
 void rightSevenLongWing();
+void rightSevenDelayedWing();
+void rightSplitSevenSetup();
 void rightNineLong();
 void rightSixLongThreeLow();
 void halfSWPRight();

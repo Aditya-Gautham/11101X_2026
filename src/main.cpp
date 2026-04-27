@@ -240,13 +240,16 @@ void autonomous() {
         //leftSevenLong();
         //leftSevenLongWing();
         //leftSixLongThreeMiddle();
-        rightFourLongThreeLow();
+        //rightFourLongThreeLow();
         //rightFourLong();
         //rightSixLong();
         //rightSevenLong();
         //rightSevenLongWing();
+        //rightSevenDelayedWing();
         //rightNineLong();
         //rightSixLongThreeLow();
+        //rightSplitDifferentSetup();
+        //rightSplitSevenSetup();
         //rightThreeGoal();
         //soloWinPoint();
         //skills();

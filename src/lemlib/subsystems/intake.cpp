@@ -24,6 +24,10 @@ void Intake::moveBottomIntake(double velocity){
     bottomIntakeMotor.move_velocity(velocity);
 }
 
+void Intake::moveBottomIntakeVoltage(double voltage){
+    bottomIntakeMotor.move_voltage(voltage);
+}
+
 void Intake::moveMiddleIntake(double velocity){
     middleIntakeMotor.move_velocity(velocity);
 }
@@ -64,7 +68,7 @@ void Intake::outtakeForSkillsMiddleGoal() {
     //moveBottomIntake(-600);
     //moveMiddleIntake(-600);
     //moveTopIntake(-600);
-    bottomIntakeMotor.move_voltage(-8500);
+    bottomIntakeMotor.move_voltage(-7000);
     middleIntakeMotor.move_voltage(-12000);
     topIntakeMotor.move_voltage(-12000);
 }
@@ -106,9 +110,9 @@ void Intake::middleGoal() {
 }
 
 void Intake::middleGoalSplit() {
-    moveBottomIntake(400);
-    moveMiddleIntake(400);
-    moveTopIntake(-300);
+    bottomIntakeMotor.move_voltage(8000);
+    middleIntakeMotor.move_voltage(7000);
+    topIntakeMotor.move_voltage(-3000);
 }
 
 void Intake::longGoal() {
@@ -143,9 +147,9 @@ void Intake::setCoast() {
 
 void Intake::intakeOutAuton() {
     //
-    bottomIntakeMotor.move_voltage(8000);
-    middleIntakeMotor.move_voltage(8000);
-    topIntakeMotor.move_voltage(-6000);
+      bottomIntakeMotor.move_voltage(9000);
+    middleIntakeMotor.move_voltage(9000);
+    topIntakeMotor.move_voltage(-4000);
 
     //moveBottomIntake(175);
     //moveMiddleIntake(200);

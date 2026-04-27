@@ -49,6 +49,8 @@ class Intake {
         void outtakeForSkillsMiddleGoal();
 
         void longGoalDriverSkills();
+
+        void moveBottomIntakeVoltage(double voltage);
         
         void intakeOutSkills();
 
